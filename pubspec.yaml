@@ -39,6 +39,22 @@ dependencies:
 
   font_awesome_flutter: ^9.0.0
   cached_network_image: ^3.2.3
+  hexcolor: ^2.0.4
+  otp_text_field: ^1.1.1
+
+  # Service locator
+  get_it: ^7.2.0
+  # state management
+  provider: ^6.0.3
+  # Value equality
+  equatable: ^2.0.3
+  # Functional programming thingies
+  dartz: ^0.10.1
+  # Remote API
+  # http: ^0.13.4
+  dio: ^4.0.4
+  # json serialization
+  json_annotation: ^4.4.0
 
 dev_dependencies:
   flutter_test:

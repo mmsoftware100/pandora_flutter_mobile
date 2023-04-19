@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'data/constant/global.dart';
+
+
 class Tweet extends StatelessWidget {
   final String avatar;
   final String username;
@@ -44,10 +47,12 @@ class Tweet extends StatelessWidget {
         backgroundImage: NetworkImage(this.avatar),
       ),*/
       child:CachedNetworkImage(
-        imageUrl: 'https://pbs.twimg.com/profile_images/945853318273761280/0U40alJG_400x400.jpg',
+        imageUrl: this.avatar,
         imageBuilder: (context, imageProvider) => Container(
-          width: 80.0,
-          height: 80.0,
+          // width: 80.0,
+          // height: 80.0,
+          width: MediaQuery.of(context).size.width / 10,
+          height: MediaQuery.of(context).size.width / 10,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
@@ -134,7 +139,7 @@ class Tweet extends StatelessWidget {
         Icon(
           icon,
           size: 16.0,
-          color: Colors.black45,
+          color: parseColor("#69001e"),
         ),
         Container(
           margin: const EdgeInsets.all(6.0),
