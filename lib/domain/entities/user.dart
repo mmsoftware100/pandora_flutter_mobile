@@ -7,7 +7,6 @@ class User{
   String uid;
   String name;
   String email;
-  String password;
   String accessToken;
   String phone;
   String city;
@@ -24,7 +23,6 @@ class User{
     required this.uid,
     required this.name,
     required this.email,
-    required this.password,
     required this.accessToken,
     required this.phone,
     required this.city,
@@ -63,7 +61,6 @@ class User{
         uid: "uid",
         name: "name",
         email: "email",
-        password: "password",
         accessToken: "accessToken",
         phone: "phone",
         city: "city",

@@ -1,5 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pandora_flutter_mobile/model/user_statistics_model.dart';
+
+import '../domain/entities/user.dart';
+import '../domain/entities/user_statistics.dart';
 part 'user_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -75,4 +78,23 @@ class UserModel {
   }
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
+
+  User toEntity(){
+    return User(
+        id: id,
+        uid: uid,
+        name: name,
+        email: email,
+        accessToken: accessToken,
+        phone: phone,
+        city: city,
+        age: age,
+        gender: gender,
+        photoUrl: photoUrl,
+        roleId: roleId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        userStatistics: userStatistics?.toEntity() ?? UserStatistics.sample
+    );
+  }
 }

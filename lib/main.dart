@@ -1,12 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:pandora_flutter_mobile/tweets.dart';
+import 'package:provider/provider.dart';
 
 import 'data/constant/global.dart';
 import 'view/pages/home_page.dart';
 import 'view/pages/splash_screen.dart';
+import 'injection_container.dart' as di;
 
-void main() => runApp(TwitterCloneApp());
+void main()async {
+
+  print("main");
+  WidgetsFlutterBinding.ensureInitialized();
+
+  print("WidgetsFlutterBinding.ensureInitialized");
+  // await Firebase.initializeApp();
+  try{
+    //MobileAds.instance.initialize();
+
+    print("MobileAds.instance.initialize");
+  }
+  catch(exp){
+    print("MobileAds.instance.initialize init exp");
+    print(exp);
+  }
+
+  await di.init();
+  runApp(
+    MultiProvider(
+      providers:[
+        ChangeNotifierProvider(create: (_) => UserProvider(
+          userLogin: di.sl(),
+          loginWithEmail: di.sl()
+        ))
+      ],
+      child:TwitterCloneApp()
+    )
+  );
+}
 
 class TwitterCloneApp extends StatelessWidget {
   @override

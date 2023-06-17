@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import '../domain/entities/user_statistics.dart';
 part 'user_statistics_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 
@@ -70,7 +72,9 @@ class UserStatisticsModel{
   }
   Map<String, dynamic> toJson() => _$UserStatisticsModelToJson(this);
 
-
+  UserStatistics toEntity(){
+    return UserStatistics(rank: rank, nextRank: nextRank, rankProgress: rankProgress, level: level, nextLevel: nextLevel, levelProgress: levelProgress, questionTotal: questionTotal, questionPassed: questionPassed, questionFailed: questionFailed, coinTotal: coinTotal, coinExchanged: coinExchanged, coinCurrent: coinCurrent, createdAt: createdAt, updatedAt: updatedAt);
+  }
 }
 
 

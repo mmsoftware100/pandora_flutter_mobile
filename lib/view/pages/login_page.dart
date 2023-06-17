@@ -6,6 +6,7 @@ import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/loader.dart';
+import '../../data/constant/const.dart';
 import '../../data/constant/theme_helper.dart';
 import '../widgets/header_widget.dart';
 import 'forgot_password_page.dart';
@@ -91,15 +92,21 @@ class _LoginPageState extends State<LoginPage>{
                                   padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
                                   child: Text('Sign In'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
                                 ),
-                                onPressed: (){
+                                onPressed: () async{
                                   //After successful login we will redirect to profile page. Let's create profile page now
                                   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
                                   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
 
-
+                                  // show loading indicator
                                   Dialogs.showLoadingDialog(context, _keyLoader);
-                                  bool loginStatus = Provider.of<UserProvider>(context,false).loginWithEmailPlz(email: email, password: password);
+                                  bool loginStatus = await Provider.of<UserProvider>(context, listen: false).loginWithEmailPlz(email: defaultEmail, password: defaultPassword);
+
+                                  // hide loading indicator
+                                  Navigator.pop(context);
+
+                                  print("loginStatus status is "+loginStatus.toString());
+
                                 },
                               ),
                             ),
