@@ -5,10 +5,10 @@ import 'package:dartz/dartz.dart';
 import '../../core/error/failures.dart';
 import '../entities/user.dart';
 
-abstract class userRepository{
+abstract class UserRepository{
 
   Future<Either<Failure,User>> login({
   required String accessToken
 });
-  
+
 }
