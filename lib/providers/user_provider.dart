@@ -13,7 +13,7 @@ class UserProvider extends ChangeNotifier{
 
   //constructor
   UserProvider({
-    required this.userLogin;
+    required this.userLogin
 
   });
 
