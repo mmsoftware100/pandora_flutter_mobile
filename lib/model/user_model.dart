@@ -1,27 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pandora_flutter_mobile/model/user_statistics_model.dart';
-
 part 'user_model.g.dart';
+
 @JsonSerializable(explicitToJson: true)
 
 class UserModel {
-  UserModel({
-    required this.id,
-    required this.uid,
-    required this.name,
-    required this.phone,
-    required this.city,
-    required this.age,
-    required this.gender,
-    required this.photoUrl,
-    required this.email,
-    required this.emailVerifiedAt,
-    required this.roleId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.accessToken,
-    required this.userStatistics,
-  });
+
+
   @JsonKey(defaultValue: 0)
   int id;
 
@@ -64,36 +49,30 @@ class UserModel {
   @JsonKey(name: 'access_token' ,defaultValue: "access_token")
   String accessToken;
 
-
-
-
-
-
-
-  @JsonKey(name: 'password' ,defaultValue: "password")
-  String password;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @JsonKey(name: 'user_statistics' ,defaultValue: null)
   UserStatisticsModel? userStatistics;
+
+  UserModel({
+    required this.id,
+    required this.uid,
+    required this.name,
+    required this.phone,
+    required this.city,
+    required this.age,
+    required this.gender,
+    required this.photoUrl,
+    required this.email,
+    required this.emailVerifiedAt,
+    required this.roleId,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.accessToken,
+    required this.userStatistics,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return _$UserModelFromJson(json);
   }
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
+
 }

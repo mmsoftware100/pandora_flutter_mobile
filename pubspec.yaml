@@ -53,10 +53,17 @@ dependencies:
   # Remote API
   # http: ^0.13.4
   dio: ^4.0.4
-  # json serialization
-  json_annotation: ^4.4.0
 
 dev_dependencies:
+
+  # json serialization
+  json_annotation: ^4.4.0
+  flutter_native_splash: ^2.1.1
+  change_app_package_name: ^1.1.0
+  # serialization
+  build_runner:
+  json_serializable:
+
   flutter_test:
     sdk: flutter
 
