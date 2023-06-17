@@ -9,6 +9,11 @@ abstract class UserRepository{
 
   Future<Either<Failure,User>> login({
   required String accessToken
-});
+  });
+
+  Future<Either<Failure,User>> loginWithEmail({
+    required String email,
+    required String password,
+  });
 
 }

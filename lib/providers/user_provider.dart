@@ -4,16 +4,19 @@ import 'package:flutter/cupertino.dart';
 
 import '../core/error/failures.dart';
 import '../domain/entities/user.dart';
+import '../domain/usecases/login_with_email.dart';
 import '../domain/usecases/user_login.dart';
 
 class UserProvider extends ChangeNotifier{
 
   //use case list
   final UserLogin userLogin;
+  final LoginWithEmail loginWithEmail;
 
   //constructor
   UserProvider({
-    required this.userLogin
+    required this.userLogin,
+    required this.loginWithEmail
 
   });
 
@@ -37,6 +40,21 @@ class UserProvider extends ChangeNotifier{
               user = loggedInUser;
               status =  true;
               return status;
+            });
+  }
+
+  Future<bool> loginWithEmailPlz({required String email, required String password}) async {
+    final Either<Failure,User> userEither = await loginWithEmail(LoginWithEmailParams(email:email,password: password));
+    return userEither.fold(
+            (failure) {
+              print("UserProvider->loginWithEmailPlz failure");
+              print(failure);
+              return false;
+              },
+            (loggedInUser)async{
+              user = loggedInUser;
+              notifyListeners();
+              return true;
             });
   }
   

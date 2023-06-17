@@ -2,7 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pandora_flutter_mobile/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
+import '../../components/loader.dart';
 import '../../data/constant/theme_helper.dart';
 import '../widgets/header_widget.dart';
 import 'forgot_password_page.dart';
@@ -20,6 +23,8 @@ class LoginPage extends StatefulWidget{
 class _LoginPageState extends State<LoginPage>{
   double _headerHeight = 250;
   Key _formKey = GlobalKey<FormState>();
+
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +94,12 @@ class _LoginPageState extends State<LoginPage>{
                                 onPressed: (){
                                   //After successful login we will redirect to profile page. Let's create profile page now
                                   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+
+
+
+                                  Dialogs.showLoadingDialog(context, _keyLoader);
+                                  bool loginStatus = Provider.of<UserProvider>(context,false).loginWithEmailPlz(email: email, password: password);
                                 },
                               ),
                             ),

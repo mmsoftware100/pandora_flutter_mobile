@@ -15,3 +15,7 @@ const String loginEndpoint = apiVersion + '/login';
 // const String selectBillEndpoint = apiVersion + '/bills';
 // const String selectBillExchangesEndpoint = apiVersion + '/exchange/histories';
 // const String selectTelephoneOperatorsEndpoint = apiVersion + '/phoneoperators';
+
+
+String email = "";
+String password = "";
