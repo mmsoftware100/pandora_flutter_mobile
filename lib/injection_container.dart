@@ -19,6 +19,7 @@ Future<void> init() async {
 
 
   /* Factory ဆိုတာက App တစ်ခုလုံးမှာမှ တစ်ခုပဲ ရှိမယ့် ဟာမျိုးကို ဆိုလိုတာလား မသိ */
+  /*
   /// Providers
   sl.registerFactory(
           () => UserProvider(
@@ -27,12 +28,14 @@ Future<void> init() async {
       )
   );
 
+   */
+
   /// Use Cases
   sl.registerLazySingleton<UserLogin>(() =>  UserLogin(userRepository: sl()));
   sl.registerLazySingleton<LoginWithEmail>(() =>  LoginWithEmail(userRepository: sl()));
 
   /// Repositories
-  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(userRemoteDataSource: sl()));
+  // sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(userRemoteDataSource: sl()));
 
   // Data Sources
 

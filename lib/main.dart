@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pandora_flutter_mobile/providers/article_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:pandora_flutter_mobile/tweets.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +31,17 @@ void main()async {
   runApp(
     MultiProvider(
       providers:[
+        /*
         ChangeNotifierProvider(create: (_) => UserProvider(
           userLogin: di.sl(),
           loginWithEmail: di.sl()
         ))
+
+         */
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ArticleProvider()),
+
+
       ],
       child:TwitterCloneApp()
     )

@@ -2,7 +2,7 @@ const String appName = "Pandora";
 // const String appStoreUrl ="https://apps.apple.com/jp/app/ooak-store/id1595459662";
 // const String playStoreUrl ="https://play.google.com/store/apps/details?id=com.mmsoftware100.ooak";
 const bool devMode  = true;
-const String backendApiServer = devMode ? 'https://mmsoftware100.com/pandora/public' : 'https://mmsoftware100.com/pandora/public';
+const String backendApiServer = devMode ? 'https://pandora.mmsoftware100.com' : 'https://mmsoftware100.com/pandora/public';
 const String apiVersion = backendApiServer + '/api/v1';
 const String loginEndpoint = apiVersion + '/login';
 // const String loginWithGoogleEndpoint = apiVersion + '/login/google';

@@ -52,8 +52,8 @@ class UserModel {
   @JsonKey(name: 'access_token' ,defaultValue: "access_token")
   String accessToken;
 
-  @JsonKey(name: 'user_statistics' ,defaultValue: null)
-  UserStatisticsModel? userStatistics;
+  @JsonKey(name: 'user_statistics' ,defaultValue: [])
+  List<UserStatisticsModel?> userStatistics;
 
   UserModel({
     required this.id,
@@ -78,7 +78,7 @@ class UserModel {
   }
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
-
+/*
   User toEntity(){
     return User(
         id: id,
@@ -97,4 +97,6 @@ class UserModel {
         userStatistics: userStatistics?.toEntity() ?? UserStatistics.sample
     );
   }
+
+ */
 }

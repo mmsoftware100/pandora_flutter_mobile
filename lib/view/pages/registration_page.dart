@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
+import '../../components/loader.dart';
 import '../../data/constant/theme_helper.dart';
+import '../../providers/user_provider.dart';
 import '../widgets/header_widget.dart';
 import 'profile_page.dart';
 
@@ -18,8 +21,15 @@ class RegistrationPage extends  StatefulWidget{
 class _RegistrationPageState extends State<RegistrationPage>{
 
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
   bool checkedValue = false;
   bool checkboxValue = false;
+
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,20 +90,35 @@ class _RegistrationPageState extends State<RegistrationPage>{
                         SizedBox(height: 30,),
                         Container(
                           child: TextFormField(
+                            controller: firstNameController,
                             decoration: ThemeHelper().textInputDecoration('First Name', 'Enter your first name'),
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return "Please enter your first name";
+                              }
+                              return null;
+                            },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 30,),
                         Container(
                           child: TextFormField(
+                            controller: lastNameController,
                             decoration: ThemeHelper().textInputDecoration('Last Name', 'Enter your last name'),
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return "Please enter your last name";
+                              }
+                              return null;
+                            },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
+                            controller: emailController,
                             decoration: ThemeHelper().textInputDecoration("E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
                             validator: (val) {
@@ -106,6 +131,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+                        /*
                         Container(
                           child: TextFormField(
                             decoration: ThemeHelper().textInputDecoration(
@@ -122,9 +148,13 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+
+                         */
+
                         Container(
                           child: TextFormField(
                             obscureText: true,
+                            controller: passwordController,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Password*", "Enter your password"),
                             validator: (val) {
@@ -189,14 +219,34 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                 ),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: ()async {
                               if (_formKey.currentState!.validate()) {
+                                /*
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) => ProfilePage()
                                     ),
                                         (Route<dynamic> route) => false
                                 );
+
+                                 */
+
+                                // show loading indicator
+                                Dialogs.showLoadingDialog(context, _keyLoader);
+
+                                bool registrationStatus = await Provider.of<UserProvider>(context, listen: false).registration(firstNameController.text,emailController.text,passwordController.text);
+
+                                // hide loading indicator
+                                Navigator.pop(context);
+
+                                if(registrationStatus == true){
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => ProfilePage()
+                                      ),
+                                          (Route<dynamic> route) => false
+                                  );
+                                }
                               }
                             },
                           ),

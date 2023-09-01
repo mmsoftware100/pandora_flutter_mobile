@@ -21,10 +21,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       createdAt: json['created_at'] as String? ?? 'created_at',
       updatedAt: json['updated_at'] as String? ?? 'updated_at',
       accessToken: json['access_token'] as String? ?? 'access_token',
-      userStatistics: json['user_statistics'] == null
-          ? null
-          : UserStatisticsModel.fromJson(
-              json['user_statistics'] as Map<String, dynamic>),
+      userStatistics: (json['user_statistics'] as List<dynamic>?)
+              ?.map((e) => e == null
+                  ? null
+                  : UserStatisticsModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -42,5 +44,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'access_token': instance.accessToken,
-      'user_statistics': instance.userStatistics?.toJson(),
+      'user_statistics':
+          instance.userStatistics.map((e) => e?.toJson()).toList(),
     };

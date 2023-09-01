@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pandora_flutter_mobile/providers/article_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,20 @@ class _LoginPageState extends State<LoginPage>{
   Key _formKey = GlobalKey<FormState>();
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void _showToast(BuildContext context,String result) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content:  Text(result),
+        // action: SnackBarAction(
+        //     label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +75,7 @@ class _LoginPageState extends State<LoginPage>{
                           children: [
                             Container(
                               child: TextField(
+                                controller: userNameController,
                                 decoration: ThemeHelper().textInputDecoration('User Name', 'Enter your user name'),
                               ),
                               decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -67,6 +83,7 @@ class _LoginPageState extends State<LoginPage>{
                             SizedBox(height: 30.0),
                             Container(
                               child: TextField(
+                                controller: passwordController,
                                 obscureText: true,
                                 decoration: ThemeHelper().textInputDecoration('Password', 'Enter your password'),
                               ),
@@ -98,14 +115,43 @@ class _LoginPageState extends State<LoginPage>{
                                   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
 
-                                  // show loading indicator
-                                  Dialogs.showLoadingDialog(context, _keyLoader);
-                                  bool loginStatus = await Provider.of<UserProvider>(context, listen: false).loginWithEmailPlz(email: defaultEmail, password: defaultPassword);
+                                  print("Hey");
+                                  print(userNameController.text);
+                                  print("Hey");
 
-                                  // hide loading indicator
-                                  Navigator.pop(context);
+                                  if(userNameController.text != "" && passwordController.text != ""){
+                                    // show loading indicator
+                                    Dialogs.showLoadingDialog(context, _keyLoader);
+                                    // bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: defaultEmail, password: defaultPassword);
+                                    bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: userNameController.text, password: passwordController.text);
 
-                                  print("loginStatus status is "+loginStatus.toString());
+                                    // hide loading indicator
+                                    Navigator.pop(context);
+
+                                    print("loginStatus status is "+loginStatus.toString());
+
+                                    if(loginStatus == true){
+                                      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+
+                                      if(atricleStatus == true){
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                      }
+                                      else{
+                                        _showToast(context,'Article bug');
+
+                                      }
+
+                                    }
+                                    else{
+                                      _showToast(context,'Login fail');
+
+                                    }
+                                  }
+                                  else{
+                                    _showToast(context,'Username or password incorrect');
+                                  }
+
+
 
                                 },
                               ),
