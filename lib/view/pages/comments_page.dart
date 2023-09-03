@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 import '../../components/loader.dart';
 import '../../model/comment_model.dart';
 import '../../providers/article_provider.dart';
+import '../../providers/comment_provider.dart';
 
 class CommentsPage extends StatefulWidget {
-  int newsIndex;
-  CommentsPage({Key? key,required this.newsIndex}) : super(key: key);
+  String articleId;
+  CommentsPage({Key? key,required this.articleId}) : super(key: key);
 
   @override
   State<CommentsPage> createState() => _CommentsPageState();
@@ -22,7 +23,6 @@ class _CommentsPageState extends State<CommentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
       ),
       body: SafeArea(
           child: Stack(children: [
@@ -37,7 +37,7 @@ class _CommentsPageState extends State<CommentsPage> {
                             physics: NeverScrollableScrollPhysics(),
                             // Scroll Controller for functionality
                             controller: listScrollController,
-                            children: Provider.of<ArticleProvider>(context, listen: true).articleList.map((e){
+                            children: Provider.of<CommentProvider>(context,listen: true).commentList.map((e){
                               return Card(
                                 child: Container(
                                     child: Padding(
@@ -47,7 +47,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text(e.title),
+                                            child: Text(e.content.toString()),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),

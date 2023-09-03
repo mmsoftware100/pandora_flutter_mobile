@@ -36,17 +36,59 @@ class ApiServices{
     return response.body;
   }
 
-  static Future<dynamic> getproject(token)async{
+  static Future<dynamic> createArticle(token,body)async{
     print(token);
-    http.Response response = await http.get(Uri.parse(URLs.project_url),headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+    http.Response response = await http.post(Uri.parse(URLs.article_url),headers: {
       'Authorization': 'Bearer $token',
-    });
-    print("ApiServices getproject");
+    },
+    body:body);
+    print("ApiServices createArticle");
     print(response.body);
     return response.body;
   }
+
+  static Future<dynamic> updateArticle(token,body,id)async{
+    print(token);
+    http.Response response = await http.put(Uri.parse(URLs.article_url+"/"+id.toString()),headers: {
+      'Authorization': 'Bearer $token',
+    },
+        body:body);
+    print("ApiServices updateArticle");
+    print(response.body);
+    return response.body;
+  }
+
+  static Future<dynamic> getComment(token,articelId,page)async{
+    http.Response response = await http.get(Uri.parse(URLs.comments_url+"?article_id="+articelId.toString()+"&page="+page.toString()),
+      headers: {
+      'Authorization': 'Bearer $token',
+      },
+    );
+    print(response.body);
+    return response.body;
+  }
+
+  static Future<dynamic> createComment(token,body)async{
+    http.Response response = await http.post(Uri.parse(URLs.comments_url),headers: {
+      'Authorization': 'Bearer $token',
+    },
+        body:body);
+    print("ApiServices createComment");
+    print(response.body);
+    return response.body;
+  }
+
+  static Future<dynamic> createVote(token,body)async{
+    http.Response response = await http.post(Uri.parse(URLs.votes_url),headers: {
+      'Authorization': 'Bearer $token',
+    },
+        body:body);
+    print("ApiServices createVote");
+    print(response.body);
+    return response.body;
+  }
+
+
 
   static Future<dynamic> getSpecialEventsSelectByClientId(token)async{
     print(token);

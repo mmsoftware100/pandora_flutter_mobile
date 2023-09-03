@@ -19,6 +19,8 @@ class ArticleProvider extends ChangeNotifier{
         List<dynamic> dlist = dataResponse['data'];
         print(dlist);
 
+        articleList.clear();
+
         for(int i = 0; i < dlist.length; i++){
           try{
             articleList.add(ArticleModel.fromJson(dlist[i]));
@@ -41,5 +43,52 @@ class ArticleProvider extends ChangeNotifier{
     return status;
   }
 
+  Future<bool> createAritcle(String token,String title,String content)async{
+    bool status = false;
+
+    var map = new Map<String, dynamic>();
+    map['title'] = title;
+    map['content'] = content;
+
+    try{
+      await ApiServices.createArticle(token,map).then((value) {
+        Map<String,dynamic> datarespnse = jsonDecode(value);
+        print(datarespnse);
+
+        status = true;
+      });
+    }
+    catch(exp){
+      print(exp);
+      print("create Article exp ->"+exp.toString());
+      status = false;
+
+    }
+    return status;
+  }
+
+  Future<bool> updateAritcle(String token,String title,String content,int articleId)async{
+    bool status = false;
+
+    var map = new Map<String, dynamic>();
+    map['title'] = title;
+    map['content'] = content;
+
+    try{
+      await ApiServices.updateArticle(token,map,articleId).then((value) {
+        Map<String,dynamic> datarespnse = jsonDecode(value);
+        print(datarespnse);
+
+        status = true;
+      });
+    }
+    catch(exp){
+      print(exp);
+      print("update Article exp ->"+exp.toString());
+      status = false;
+
+    }
+    return status;
+  }
 
 }

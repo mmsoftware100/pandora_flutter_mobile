@@ -1,6 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:pandora_flutter_mobile/providers/comment_provider.dart';
+import 'package:pandora_flutter_mobile/providers/user_provider.dart';
+import 'package:pandora_flutter_mobile/view/pages/comments_page.dart';
+import 'package:provider/provider.dart';
 
 import 'data/constant/global.dart';
 
@@ -12,8 +17,9 @@ class Tweet extends StatelessWidget {
   final String timeAgo;
   final String text;
   final String comments;
-  final String retweets;
+  final String heartBroken;
   final String favorites;
+  final String articleId;
 
   Tweet({
         required this.avatar,
@@ -22,8 +28,9 @@ class Tweet extends StatelessWidget {
         required this.timeAgo,
         required this.text,
         required this.comments,
-        required this.retweets,
-        required this.favorites
+        required this.heartBroken,
+        required this.favorites,
+        required this.articleId
       });
 
   @override
@@ -34,7 +41,7 @@ class Tweet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           tweetAvatar(),
-          tweetBody(),
+          tweetBody(context,this.articleId),
         ],
       ),
     );
@@ -65,14 +72,14 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  Widget tweetBody() {
+  Widget tweetBody(BuildContext context,String articleId) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           tweetHeader(),
           tweetText(),
-          tweetButtons(),
+          tweetButtons(context,articleId),
         ],
       ),
     );
@@ -91,8 +98,18 @@ class Tweet extends StatelessWidget {
             ),
           ),
         ),
+        /*
         Text(
           '@$name · $timeAgo',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+
+         */
+
+        Text(
+          '$timeAgo',
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -118,16 +135,32 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  Widget tweetButtons() {
+  Widget tweetButtons(BuildContext context, String articleId) {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          tweetIconButton(FontAwesomeIcons.comment, this.comments),
-          tweetIconButton(FontAwesomeIcons.retweet, this.retweets),
+          InkWell(
+              child: tweetIconButton(FontAwesomeIcons.comment, this.comments),
+            onTap: () async{
+
+                String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+
+              bool status = await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!,int.parse(articleId), 1);
+
+              print("Text Page Get Comment list is "+Provider.of<CommentProvider>(context,listen: false).commentList.toString());
+
+              if(status == true)
+                Navigator.push(context , MaterialPageRoute(builder: (context)=> CommentsPage(articleId: articleId )));
+
+            },
+          ),
+          // tweetIconButton(FontAwesomeIcons.retweet, this.retweets),
+          // tweetIconButton(FontAwesomeIcons.heart, this.favorites),
+          tweetIconButton(FontAwesomeIcons.heartBroken, this.heartBroken),
           tweetIconButton(FontAwesomeIcons.heart, this.favorites),
-          tweetIconButton(FontAwesomeIcons.share, ''),
+          // tweetIconButton(FontAwesomeIcons.share, ''),
         ],
       ),
     );

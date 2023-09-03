@@ -13,6 +13,12 @@ class URLs{
   static const String registration_url =domain+version+ "/register";
   static const String login_url =domain+version+ "/login";
   static const String article_url =domain+version+ "/articles";
+  static const String comments_url =domain+version+ "/comments";
+  static const String votes_url =domain+version+ "/votes";
+
+
+
+
   static const String project_url =domain+version+ "/my-projects";
   static const String events_url =domain+version+ "/special-events";
   static const String assessments_url =domain+version+ "/assessments";
@@ -21,6 +27,5 @@ class URLs{
   static const String my_chat_group_url =domain+version+ "/chat/groups";
   static const String send_message_url =domain+version+ "/chat/messages/send";
   static const String likes_url =domain+version+ "/likes";
-  static const String comments_url =domain+version+ "/comments";
 
 }
