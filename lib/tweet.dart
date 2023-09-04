@@ -2,12 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pandora_flutter_mobile/providers/comment_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:pandora_flutter_mobile/view/pages/comments_page.dart';
 import 'package:provider/provider.dart';
 
+import 'components/constants.dart';
 import 'data/constant/global.dart';
+import 'view/widgets/text_description.dart';
 
 
 class Tweet extends StatelessWidget {
@@ -128,11 +131,17 @@ class Tweet extends StatelessWidget {
   }
 
   Widget tweetText() {
-    return Text(
+    return text.length < 150 ? Text(
       text,
-      style: TextStyle(fontSize: 18),
+      style: GoogleFonts.lato(
+          color: Colors.grey[600],
+          letterSpacing: 1,
+          fontSize: newsFontSize,
+          fontWeight: FontWeight.normal),
+      textAlign: TextAlign.justify,
       overflow: TextOverflow.clip,
-    );
+    )
+        :new DescriptionTextWidget(text: text);
   }
 
   Widget tweetButtons(BuildContext context, String articleId) {
