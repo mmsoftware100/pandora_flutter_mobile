@@ -77,7 +77,8 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                     bool status = await Provider.of<ArticleProvider>(context, listen: false).createAritcle(accessToken!, "Test Page Title", contentController.text);
                     if(status == true){
                       _showToast(context,"Post created");
-                      await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+                      int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                      await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
                       Navigator.pop(context);
                     }
                   },

@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _enablePullDown = true; // this enable our app to able to pull down
   RefreshController _refreshController = RefreshController(); // the refresh controller
+  int curentPage = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -56,29 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // body: listOfTweets(),
 
       // So inside the body widget we will implement pull to refresh, So first we call
-      body: SmartRefresher(
-        enablePullUp: true,
-        enablePullDown: _enablePullDown, // the bool we create, so this gave access to be able to pull the app down
-        header: WaterDropHeader(
-          waterDropColor: Colors.teal,
-// complete: If the refresh is completed show this else failed
-          complete: Text('Complete',
-              style: TextStyle(
-                  color: Colors.teal,
-                  fontSize: 18,
-                  fontWeight: FontWeight
-                      .bold)), // you can customize this whatever you like
-          failed:
-          Text('Failed', style: TextStyle(color: Colors.red, fontSize: 18)),
-        ),
-        controller: _refreshController,
-        onRefresh: _onRefresh, // we are going to inplement _onRefresh and _onLoading below our build method
-        onLoading: _onLoading,
-        child: Provider.of<ArticleProvider>(context, listen: true).articleList.length == 0 ? Center(
-          child: Text("No data".tr()),
-        ):
-        listOfArticles(),// we are going to create a list of text in this dynamic ii()
-      ),
+      body:  listOfArticles(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: parseColor("#69001e"),
         child: Icon(FontAwesomeIcons.envelope,color: Colors.white,),
@@ -103,12 +82,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _onLoading() {
+  _onLoading() async {
+    print("on laoding");
+    int? numberOfPage = Provider.of<ArticleProvider>(context, listen: false).number_of_page;
+    if(curentPage! < numberOfPage!){
+      setState(() {
+        curentPage ++;
+      });
+      await Provider.of<ArticleProvider>(context, listen: false).getArticle(curentPage!);
+    }
     _refreshController
         .loadComplete(); // after data returned,set the footer state to idle
   }
 
   _onRefresh() async{
+    print("on refresh");
+
     setState(() {
       Future<int> a =
       CustomFunction().checkInternetConnection(); // check internet access
@@ -128,7 +117,10 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
-    await Provider.of<ArticleProvider>(context,listen: false).getArticle();
+    setState(() {
+      curentPage = 1;
+    });
+    bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(curentPage!);
 
   }
 
@@ -158,30 +150,48 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget listOfArticles(){
-    return Container(
-      color: Colors.white,
-      child: ListView.separated(
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          // return tweets[index];
-          return  Tweet(
-            // avatar: 'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
-            avatar:Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.photoUrl,
-            username: Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.name,
-            name: 'FlutterDev',
-            timeAgo: Provider.of<ArticleProvider>(context,listen: true).articleList[index].createdAt.split(".").first,
-            text: Provider.of<ArticleProvider>(context,listen: true).articleList[index].content,
-            comments:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].commentCount.toString(),
-            heartBroken:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].downVote.toString(),
-            favorites: Provider.of<ArticleProvider>(context,listen: true).articleList[index].upVote.toString(),
-            articleId: Provider.of<ArticleProvider>(context,listen: true).articleList[index].id.toString(),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => Divider(
-          height: 0,
-        ),
-        itemCount: Provider.of<ArticleProvider>(context,listen: true).articleList.length,
+    return SmartRefresher(
+      enablePullUp: true,
+      enablePullDown: _enablePullDown, // the bool we create, so this gave access to be able to pull the app down
+      header: WaterDropHeader(
+        waterDropColor: Colors.teal,
+// complete: If the refresh is completed show this else failed
+        complete: Text('Complete',
+            style: TextStyle(
+                color: Colors.teal,
+                fontSize: 18,
+                fontWeight: FontWeight
+                    .bold)), // you can customize this whatever you like
+        failed:
+        Text('Failed', style: TextStyle(color: Colors.red, fontSize: 18)),
       ),
-    );
+      controller: _refreshController,
+      onRefresh: _onRefresh, // we are going to inplement _onRefresh and _onLoading below our build method
+      onLoading: _onLoading,
+    child: Provider.of<ArticleProvider>(context, listen: true).articleList.length == 0 ? Center(
+      child: Text("No data".tr()),
+    ):
+    ListView.separated(
+    // physics: BouncingScrollPhysics(),
+    itemBuilder: (BuildContext context, int index) {
+      // return tweets[index];
+      return  Tweet(
+        // avatar: 'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
+        avatar:Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.photoUrl,
+        username: Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.name,
+        name: 'FlutterDev',
+        timeAgo: Provider.of<ArticleProvider>(context,listen: true).articleList[index].createdAt.split(".").first,
+        text: Provider.of<ArticleProvider>(context,listen: true).articleList[index].content,
+        comments:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].commentCount.toString(),
+        heartBroken:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].downVote.toString(),
+        favorites: Provider.of<ArticleProvider>(context,listen: true).articleList[index].upVote.toString(),
+        articleId: Provider.of<ArticleProvider>(context,listen: true).articleList[index].id.toString(),
+      );
+    },
+    separatorBuilder: (BuildContext context, int index) => Divider(
+    height: 0,
+    ),
+    itemCount: Provider.of<ArticleProvider>(context,listen: true).articleList.length,
+    ),);
   }
 }

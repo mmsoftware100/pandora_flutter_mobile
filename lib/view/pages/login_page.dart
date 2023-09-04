@@ -131,7 +131,8 @@ class _LoginPageState extends State<LoginPage>{
                                     print("loginStatus status is "+loginStatus.toString());
 
                                     if(loginStatus == true){
-                                      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+                                      int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                                      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
 
                                       if(atricleStatus == true){
                                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));

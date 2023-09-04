@@ -1,7 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pandora_flutter_mobile/view/pages/home_page.dart';
+import 'package:provider/provider.dart';
 
+import '../../data/constant/const.dart';
+import '../../providers/article_provider.dart';
+import '../../providers/user_provider.dart';
 import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,13 +21,32 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
 
+  /*
+  bool getArticleStatus = false;
+
+  getArticle()async{
+    await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+  }
+
+   */
+
   _SplashScreenState(){
 
-    new Timer(const Duration(milliseconds: 2000), (){
+    new Timer(const Duration(milliseconds: 2000), () async {
+
+      /*
+      getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+      if(getArticleStatus == true){
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+      }
+      */
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
       });
+
+
     });
 
     new Timer(

@@ -93,7 +93,8 @@ class _TestPageState extends State<TestPage> {
   }
 
   void getArticle() async{
-    await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+    int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+    await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
     print("Text Page Get Article list is "+Provider.of<ArticleProvider>(context,listen: false).articleList.toString());
   }
 
