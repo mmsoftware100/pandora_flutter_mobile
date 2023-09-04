@@ -24,6 +24,7 @@ ArticleModel _$ArticleModelFromJson(Map<String, dynamic> json) => ArticleModel(
                   : CommentModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      userVote: json['user_vote'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$ArticleModelToJson(ArticleModel instance) =>
@@ -38,4 +39,5 @@ Map<String, dynamic> _$ArticleModelToJson(ArticleModel instance) =>
       'down_vote': instance.downVote,
       'comment_count': instance.commentCount,
       'comments': instance.comments.map((e) => e?.toJson()).toList(),
+      'user_vote': instance.userVote,
     };

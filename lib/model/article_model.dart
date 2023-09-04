@@ -20,6 +20,7 @@ class ArticleModel {
     required this.downVote,
     required this.commentCount,
     required this.comments,
+    required this.userVote,
   });
 
   @JsonKey(defaultValue: 0)
@@ -51,6 +52,9 @@ class ArticleModel {
 
   @JsonKey(name: 'comments' ,defaultValue: [])
   List<CommentModel?> comments;
+
+  @JsonKey(name: 'user_vote' ,defaultValue: 0)
+  int userVote;
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) {
     return _$ArticleModelFromJson(json);

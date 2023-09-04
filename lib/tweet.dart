@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pandora_flutter_mobile/providers/article_provider.dart';
 import 'package:pandora_flutter_mobile/providers/comment_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
+import 'package:pandora_flutter_mobile/view/pages/article/update_article_page.dart';
 import 'package:pandora_flutter_mobile/view/pages/comments_page.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +25,7 @@ class Tweet extends StatelessWidget {
   final String heartBroken;
   final String favorites;
   final String articleId;
+  final int index;
 
   Tweet({
         required this.avatar,
@@ -33,7 +36,9 @@ class Tweet extends StatelessWidget {
         required this.comments,
         required this.heartBroken,
         required this.favorites,
-        required this.articleId
+        required this.articleId,
+        required this.index
+
       });
 
   @override
@@ -80,7 +85,7 @@ class Tweet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          tweetHeader(),
+          tweetHeader(context),
           tweetText(),
           tweetButtons(context,articleId),
         ],
@@ -88,7 +93,7 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  Widget tweetHeader() {
+  Widget tweetHeader(BuildContext context) {
     return Row(
       children: [
         Container(
@@ -124,7 +129,9 @@ class Tweet extends StatelessWidget {
             size: 14.0,
             color: Colors.grey,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (content)=>UpdateArticlePage(articleId: int.parse(this.articleId), content: this.text,)));
+          },
         ),
       ],
     );
@@ -167,8 +174,8 @@ class Tweet extends StatelessWidget {
           ),
           // tweetIconButton(FontAwesomeIcons.retweet, this.retweets),
           // tweetIconButton(FontAwesomeIcons.heart, this.favorites),
-          tweetIconButton(FontAwesomeIcons.heartBroken, this.heartBroken),
-          tweetIconButton(FontAwesomeIcons.heart, this.favorites),
+          Provider.of<ArticleProvider>(context,listen: true).articleList[this.index].userVote != 0 ?tweetIconButton(FontAwesomeIcons.thumbsDown, this.heartBroken) : tweetIconButton(FontAwesomeIcons.solidThumbsDown, this.heartBroken),
+          Provider.of<ArticleProvider>(context,listen: true).articleList[this.index].userVote != 1 ? tweetIconButton(FontAwesomeIcons.thumbsUp, this.favorites): tweetIconButton(FontAwesomeIcons.solidThumbsUp, this.favorites),
           // tweetIconButton(FontAwesomeIcons.share, ''),
         ],
       ),

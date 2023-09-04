@@ -19,7 +19,7 @@ import '../widgets/pdf_widget.dart';
 import '../widgets/text_description.dart';
 import '../widgets/video_view_widget.dart';
 import 'comments_page.dart';
-import 'create_article_page.dart';
+import 'article/create_article_page.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen();
@@ -134,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /*
   Widget listOfTweets() {
     return Container(
       color: Colors.white,
@@ -148,6 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+   */
 
   Widget listOfArticles(){
     return SmartRefresher(
@@ -186,6 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
         heartBroken:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].downVote.toString(),
         favorites: Provider.of<ArticleProvider>(context,listen: true).articleList[index].upVote.toString(),
         articleId: Provider.of<ArticleProvider>(context,listen: true).articleList[index].id.toString(),
+        index: index,
       );
     },
     separatorBuilder: (BuildContext context, int index) => Divider(
