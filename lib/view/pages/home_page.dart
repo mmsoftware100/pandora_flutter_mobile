@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
             avatar:Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.photoUrl,
             username: Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.name,
             name: 'FlutterDev',
-            timeAgo: Provider.of<ArticleProvider>(context,listen: true).articleList[index].createdAt.split(" ").first,
+            timeAgo: Provider.of<ArticleProvider>(context,listen: true).articleList[index].createdAt.split(".").first,
             text: Provider.of<ArticleProvider>(context,listen: true).articleList[index].content,
             comments:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].commentCount.toString(),
             heartBroken:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].downVote.toString(),
