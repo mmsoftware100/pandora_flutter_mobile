@@ -130,7 +130,7 @@ class Tweet extends StatelessWidget {
   Widget tweetText() {
     return Text(
       text,
-      style: TextStyle(fontWeight: FontWeight.bold),
+      style: TextStyle(fontSize: 18),
       overflow: TextOverflow.clip,
     );
   }

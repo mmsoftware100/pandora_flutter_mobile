@@ -19,6 +19,7 @@ import '../widgets/pdf_widget.dart';
 import '../widgets/text_description.dart';
 import '../widgets/video_view_widget.dart';
 import 'comments_page.dart';
+import 'create_article_page.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen();
@@ -81,8 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: parseColor("#69001e"),
         child: Icon(FontAwesomeIcons.envelope,color: Colors.white,),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateArticlePage()));
+        },
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -94,6 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+
+       */
     );
   }
 
