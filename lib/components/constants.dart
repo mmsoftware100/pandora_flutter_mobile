@@ -1,3 +1,3 @@
 
-const double newsFontSize = 20;
+const double newsFontSize = 18;
 
