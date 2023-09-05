@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage>{
                                         ..onTap = (){
                                           Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
                                         },
-                                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
                                     ),
                                   ]
                                 )

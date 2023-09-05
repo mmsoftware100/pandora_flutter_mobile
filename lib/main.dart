@@ -68,9 +68,7 @@ class TwitterCloneApp extends StatelessWidget {
       // ),
       theme: ThemeData(
         primaryColor: primaryColor,
-        accentColor: accentColor,
-        scaffoldBackgroundColor: Colors.grey.shade100,
-        primarySwatch: Colors.grey,
+        scaffoldBackgroundColor: Colors.grey.shade100, colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey).copyWith(secondary: accentColor),
       ),
       // home: HomeScreen(),
       home:SplashScreen(title: '',),
