@@ -9,6 +9,7 @@ import '../../components/loader.dart';
 import '../../data/constant/theme_helper.dart';
 import '../../providers/user_provider.dart';
 import '../widgets/header_widget.dart';
+import 'login_page.dart';
 import 'profile_page.dart';
 
 class RegistrationPage extends  StatefulWidget{
@@ -52,6 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                     key: _formKey,
                     child: Column(
                       children: [
+                        /*
                         GestureDetector(
                           child: Stack(
                             children: [
@@ -87,7 +89,9 @@ class _RegistrationPageState extends State<RegistrationPage>{
                             ],
                           ),
                         ),
-                        SizedBox(height: 30,),
+
+                         */
+                        SizedBox(height: 100,),
                         Container(
                           child: TextFormField(
                             controller: firstNameController,
@@ -147,9 +151,11 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 20.0),
 
                          */
+                        SizedBox(height: 20.0),
+
+
 
                         Container(
                           child: TextFormField(
@@ -242,7 +248,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                 if(registrationStatus == true){
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (context) => ProfilePage()
+                                          builder: (context) => LoginPage()
                                       ),
                                           (Route<dynamic> route) => false
                                   );
@@ -252,6 +258,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                         ),
                         SizedBox(height: 30.0),
+                        /*
                         Text("Or create account using social media",  style: TextStyle(color: Colors.grey),),
                         SizedBox(height: 25.0),
                         Row(
@@ -316,6 +323,8 @@ class _RegistrationPageState extends State<RegistrationPage>{
                             ),
                           ],
                         ),
+
+                         */
                       ],
                     ),
                   ),
