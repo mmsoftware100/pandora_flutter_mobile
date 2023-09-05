@@ -10,10 +10,10 @@ class ArticleProvider extends ChangeNotifier{
 
   List<ArticleModel> articleList = [];
 
-  Future<bool> getArticle() async{
+  Future<bool> getArticle(String token) async{
     bool status = false;
     try{
-      await ApiServices.getAllArticle().then((value) {
+      await ApiServices.getAllArticle(token).then((value) {
         Map<String,dynamic> dataResponse = jsonDecode(value);
         print(dataResponse);
         List<dynamic> dlist = dataResponse['data'];
@@ -90,5 +90,7 @@ class ArticleProvider extends ChangeNotifier{
     }
     return status;
   }
+
+
 
 }

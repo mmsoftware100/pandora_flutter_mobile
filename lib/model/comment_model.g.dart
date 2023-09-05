@@ -10,7 +10,7 @@ CommentModel _$CommentModelFromJson(Map<String, dynamic> json) => CommentModel(
       id: json['id'] as int? ?? 0,
       articleId: json['article_id'] as int? ?? 0,
       userId: json['user_id'] as int? ?? 0,
-      content: json['content'] as int? ?? 0,
+      content: json['content'] as String? ?? 'content',
       user: json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),

@@ -34,10 +34,10 @@ class CommentProvider extends ChangeNotifier{
   }
 
 
-  Future<bool> getComment(String token,int articleId,int pageNumber) async{
+  Future<bool> getComment(String token,int articleId) async{
     bool status = false;
     try{
-      await ApiServices.getComment(token,articleId,pageNumber).then((value) {
+      await ApiServices.getComment(token,articleId).then((value) {
         Map<String,dynamic> dataResponse = jsonDecode(value);
         print(dataResponse);
 
@@ -66,6 +66,11 @@ class CommentProvider extends ChangeNotifier{
       status = false;
     }
     return status;
+  }
+
+  void addComment({required int articleId, required int userId,required String comment,required user}){
+    commentList.add(CommentModel(id: 0, articleId: articleId, userId: userId, content: comment, user: user, createdAt: DateTime.now().toString(), updatedAt: DateTime.now().toString(),));
+    notifyListeners();
   }
 
 }

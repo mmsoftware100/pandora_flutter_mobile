@@ -147,7 +147,7 @@ class Tweet extends StatelessWidget {
 
                 String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
 
-              bool status = await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!,int.parse(articleId), 1);
+              bool status = await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!,int.parse(articleId));
 
               print("Text Page Get Comment list is "+Provider.of<CommentProvider>(context,listen: false).commentList.toString());
 

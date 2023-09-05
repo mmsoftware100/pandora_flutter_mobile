@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,6 +6,7 @@ import '../../components/loader.dart';
 import '../../model/comment_model.dart';
 import '../../providers/article_provider.dart';
 import '../../providers/comment_provider.dart';
+import '../../providers/user_provider.dart';
 
 class CommentsPage extends StatefulWidget {
   String articleId;
@@ -34,10 +36,11 @@ class _CommentsPageState extends State<CommentsPage> {
                         child:Expanded(
                           child: ListView(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             // Scroll Controller for functionality
                             controller: listScrollController,
                             children: Provider.of<CommentProvider>(context,listen: true).commentList.map((e){
+                              /*
                               return Card(
                                 child: Container(
                                     child: Padding(
@@ -56,6 +59,101 @@ class _CommentsPageState extends State<CommentsPage> {
                                         ],
                                       ),
                                     )),
+                              );
+
+                               */
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          margin: const EdgeInsets.all(10.0),
+                                          /*child: CircleAvatar(
+        backgroundImage: NetworkImage(this.avatar),
+      ),*/
+                                          child:CachedNetworkImage(
+                                            imageUrl: e.user!.photoUrl,
+                                            imageBuilder: (context, imageProvider) => Container(
+                                              // width: 80.0,
+                                              // height: 80.0,
+                                              width: MediaQuery.of(context).size.width / 10,
+                                              height: MediaQuery.of(context).size.width / 10,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                    image: imageProvider, fit: BoxFit.cover),
+                                              ),
+                                            ),
+                                            placeholder: (context, url) => CircularProgressIndicator(),
+                                            errorWidget: (context, url, error) => Icon(Icons.error),
+                                          )
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(right: 5.0),
+                                                  child: Text(
+                                                    e.user!.name,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                /*
+        Text(
+          '@$name · $timeAgo',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+
+         */
+
+                                                Text(
+                                                  e.createdAt.split(".").first,
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                /*
+                                                IconButton(
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.angleDown,
+                                                    size: 14.0,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  onPressed: () {},
+                                                ),
+
+                                                 */
+                                              ],
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                e.content,
+                                                style: TextStyle(fontSize: 14,color: Colors.white),
+                                                overflow: TextOverflow.clip,
+                                              ),
+                                              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                              width: 200,
+                                              decoration:
+                                              BoxDecoration(color: Color(0xffaeaeae), borderRadius: BorderRadius.circular(8)),
+                                              margin: EdgeInsets.only(left: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               );
                             }).toList(),
                           ),
@@ -105,6 +203,7 @@ class _CommentsPageState extends State<CommentsPage> {
       ),
     );
   }
+
 
   Widget buildInput() {
     return Container(
@@ -169,19 +268,19 @@ class _CommentsPageState extends State<CommentsPage> {
                 icon: Icon(Icons.send),
                 onPressed: ()async{
                   print("comment create");
-                  /*
+
                   if(_commentController.text.length > 0){
                     int userId = Provider.of<UserProvider>(context, listen:  false).user.id;
                     print(userId);
                     String accessToke = Provider.of<UserProvider>(context, listen: false).user.accessToken;
-                    String outsideNewsId = Provider.of<OutsideNewsProvider>(context, listen: false).outsideNews[widget.newsIndex].id.toString();
-                    print(outsideNewsId);
-                    Provider.of<OutsideNewsProvider>(context, listen: false).addComment(newsId: Provider.of<OutsideNewsProvider>(context, listen: false).outsideNews[widget.newsIndex].id, userId: userId, comment: _commentController.text, user: Provider.of<UserProvider>(context, listen:  false).user);
+                    //String articleId = Provider.of<ArticleProvider>(context, listen: false).articleList[int.parse(widget.articleId)].id.toString();
+                    print(widget.articleId);
+                    Provider.of<CommentProvider>(context, listen: false).addComment(articleId: int.parse(widget.articleId), userId: userId, comment: _commentController.text, user: Provider.of<UserProvider>(context, listen:  false).user);
 
                     // show loading indicator
                     Dialogs.showLoadingDialog(context, _keyLoader);
 
-                    await Provider.of<CommentsProvider>(context, listen:  false).createComment(accessToke, outsideNewsId, _commentController.text);
+                    await Provider.of<CommentProvider>(context, listen:  false).createComment(accessToke, widget.articleId, _commentController.text);
 
                     // hide loading indicator
                     Navigator.pop(context);
@@ -189,7 +288,7 @@ class _CommentsPageState extends State<CommentsPage> {
                     _commentController.clear();
                   }
 
-                   */
+
 
                   if (listScrollController.hasClients) {
                     final position = listScrollController.position.maxScrollExtent;

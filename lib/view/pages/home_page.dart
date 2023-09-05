@@ -128,7 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
-    await Provider.of<ArticleProvider>(context,listen: false).getArticle();
+    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+    await Provider.of<ArticleProvider>(context,listen: false).getArticle(accessToken);
 
   }
 

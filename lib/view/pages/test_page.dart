@@ -93,7 +93,7 @@ class _TestPageState extends State<TestPage> {
   }
 
   void getArticle() async{
-    await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+    await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken!);
     print("Text Page Get Article list is "+Provider.of<ArticleProvider>(context,listen: false).articleList.toString());
   }
 
@@ -125,7 +125,7 @@ class _TestPageState extends State<TestPage> {
     setState(() {
       accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
     });
-    await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!, 1, 1);
+    await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!, 1);
     print("Text Page Get Comment list is "+Provider.of<CommentProvider>(context,listen: false).commentList.toString());
   }
 

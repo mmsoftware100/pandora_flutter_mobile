@@ -26,8 +26,8 @@ class CommentModel {
   @JsonKey(name: 'user_id' ,defaultValue: 0)
   int userId;
 
-  @JsonKey(name: 'content' ,defaultValue: 0)
-  int content;
+  @JsonKey(name: 'content' ,defaultValue: 'content')
+  String content;
 
   @JsonKey(name: 'user' ,defaultValue: null)
   UserModel? user;

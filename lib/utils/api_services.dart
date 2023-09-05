@@ -20,17 +20,17 @@ class ApiServices{
     return response.body;
   }
 
-  static Future<dynamic> getAllArticle()async{
+  static Future<dynamic> getAllArticle(token)async{
     // print(token);
     http.Response response = await http.get(Uri.parse(URLs.article_url),
-        /*
+
         headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     }
 
-         */
+
     );
     print(response.body);
     return response.body;
@@ -58,8 +58,8 @@ class ApiServices{
     return response.body;
   }
 
-  static Future<dynamic> getComment(token,articelId,page)async{
-    http.Response response = await http.get(Uri.parse(URLs.comments_url+"?article_id="+articelId.toString()+"&page="+page.toString()),
+  static Future<dynamic> getComment(token,articelId)async{
+    http.Response response = await http.get(Uri.parse(URLs.comments_url+"?article_id="+articelId.toString()),
       headers: {
       'Authorization': 'Bearer $token',
       },
