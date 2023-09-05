@@ -153,15 +153,10 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
-<<<<<<< HEAD
-    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
-    await Provider.of<ArticleProvider>(context,listen: false).getArticle(accessToken);
-=======
     setState(() {
       curentPage = 1;
     });
     bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(curentPage!);
->>>>>>> 23b96988d4a163a71c9d84e97b52cb790c7560b1
 
   }
 

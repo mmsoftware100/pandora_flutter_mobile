@@ -141,14 +141,9 @@ class _LoginPageState extends State<LoginPage>{
                                     print("loginStatus status is "+loginStatus.toString());
 
                                     if(loginStatus == true){
-<<<<<<< HEAD
-                                      String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
-                                      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken);
-=======
                                       saveUserNameAndPassword(userNameController.text,passwordController.text);
                                       int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
                                       bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
->>>>>>> 23b96988d4a163a71c9d84e97b52cb790c7560b1
 
                                       if(atricleStatus == true){
                                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));

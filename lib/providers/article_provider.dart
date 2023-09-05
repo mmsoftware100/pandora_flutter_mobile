@@ -10,12 +10,6 @@ class ArticleProvider extends ChangeNotifier{
 
   List<ArticleModel> articleList = [];
 
-<<<<<<< HEAD
-  Future<bool> getArticle(String token) async{
-    bool status = false;
-    try{
-      await ApiServices.getAllArticle(token).then((value) {
-=======
   int? current_page = 1;
   int? total_count;
   int? limit;
@@ -26,7 +20,6 @@ class ArticleProvider extends ChangeNotifier{
     bool status = false;
     try{
       await ApiServices.getAllArticlePerPage(pageNo.toString()).then((value) {
->>>>>>> 23b96988d4a163a71c9d84e97b52cb790c7560b1
         Map<String,dynamic> dataResponse = jsonDecode(value);
         print(dataResponse);
         List<dynamic> dlist = dataResponse['data'];
