@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/constants.dart';
 import '../../components/custom_fuction.dart';
@@ -20,6 +21,7 @@ import '../widgets/text_description.dart';
 import '../widgets/video_view_widget.dart';
 import 'comments_page.dart';
 import 'article/create_article_page.dart';
+import 'login_page.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen();
@@ -30,9 +32,32 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   bool _enablePullDown = true; // this enable our app to able to pull down
   RefreshController _refreshController = RefreshController(); // the refresh controller
   int curentPage = 1;
+  String? userName;
+  String? password;
+
+  getSahredPreferenesData() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      userName = (prefs.getString('username') ?? "");
+      password = (prefs.getString('password') ?? "");
+
+    });
+
+    print("userName is "+userName!);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getSahredPreferenesData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +86,23 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: parseColor("#69001e"),
         child: Icon(FontAwesomeIcons.envelope,color: Colors.white,),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateArticlePage()));
+        onPressed: () async{
+
+          if(userName == "" && password == ""){
+            bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: userName!, password: password!);
+
+            if(loginStatus == true){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+            }
+
+          }
+          else{
+            bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: userName!, password: password!);
+
+            if(loginStatus == true){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateArticlePage()));
+            }
+          }
         },
       ),
       /*

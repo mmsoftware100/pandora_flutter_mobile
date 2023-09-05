@@ -67,6 +67,8 @@ dependencies:
   pull_to_refresh: ^2.0.0
   connectivity: any
 
+  shared_preferences: ^2.2.1
+
 dev_dependencies:
 
   # json serialization

@@ -21,9 +21,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
 
-  /*
-  bool getArticleStatus = false;
 
+  bool getArticleStatus = false;
+/*
   getArticle()async{
     await Provider.of<ArticleProvider>(context, listen: false).getArticle();
   }
@@ -34,17 +34,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
     new Timer(const Duration(milliseconds: 2000), () async {
 
-      /*
-      getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle();
+
+      getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(1);
       if(getArticleStatus == true){
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
       }
-      */
+      /*
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
       });
+
+       */
 
 
     });
