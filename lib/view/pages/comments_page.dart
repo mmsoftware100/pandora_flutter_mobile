@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/loader.dart';
 import '../../model/comment_model.dart';
@@ -21,6 +22,22 @@ class _CommentsPageState extends State<CommentsPage> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController _commentController = TextEditingController();
   ScrollController listScrollController = ScrollController();
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String? userName;
+  String? password;
+
+  getSahredPreferenesData() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      userName = (prefs.getString('username') ?? "");
+      password = (prefs.getString('password') ?? "");
+
+    });
+
+    print("userName is "+userName!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

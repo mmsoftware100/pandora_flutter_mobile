@@ -10,16 +10,38 @@ class ArticleProvider extends ChangeNotifier{
 
   List<ArticleModel> articleList = [];
 
+<<<<<<< HEAD
   Future<bool> getArticle(String token) async{
     bool status = false;
     try{
       await ApiServices.getAllArticle(token).then((value) {
+=======
+  int? current_page = 1;
+  int? total_count;
+  int? limit;
+  int? offset;
+  int? number_of_page;
+
+  Future<bool> getArticle(int pageNo) async{
+    bool status = false;
+    try{
+      await ApiServices.getAllArticlePerPage(pageNo.toString()).then((value) {
+>>>>>>> 23b96988d4a163a71c9d84e97b52cb790c7560b1
         Map<String,dynamic> dataResponse = jsonDecode(value);
         print(dataResponse);
         List<dynamic> dlist = dataResponse['data'];
         print(dlist);
 
-        articleList.clear();
+        current_page = dataResponse['pagination']['current_page'] ;
+        total_count = dataResponse['pagination']['total_count'];
+        limit = dataResponse['pagination']['limit'];
+        offset = dataResponse['pagination']['offset'];
+        number_of_page = dataResponse['pagination']['number_of_page'];
+
+        if(pageNo == 1){
+          articleList.clear();
+        }
+
 
         for(int i = 0; i < dlist.length; i++){
           try{
@@ -42,6 +64,8 @@ class ArticleProvider extends ChangeNotifier{
     }
     return status;
   }
+
+
 
   Future<bool> createAritcle(String token,String title,String content)async{
     bool status = false;

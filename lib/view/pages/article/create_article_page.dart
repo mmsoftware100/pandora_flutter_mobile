@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/article_provider.dart';
-import '../../providers/user_provider.dart';
+import '../../../providers/article_provider.dart';
+import '../../../providers/user_provider.dart';
 
 class CreateArticlePage extends StatefulWidget {
   const CreateArticlePage({Key? key}) : super(key: key);
@@ -77,7 +77,12 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                     bool status = await Provider.of<ArticleProvider>(context, listen: false).createAritcle(accessToken!, "Test Page Title", contentController.text);
                     if(status == true){
                       _showToast(context,"Post created");
+<<<<<<< HEAD:lib/view/pages/create_article_page.dart
                       await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken);
+=======
+                      int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                      await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
+>>>>>>> 23b96988d4a163a71c9d84e97b52cb790c7560b1:lib/view/pages/article/create_article_page.dart
                       Navigator.pop(context);
                     }
                   },

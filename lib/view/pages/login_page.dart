@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pandora_flutter_mobile/providers/article_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/loader.dart';
 import '../../data/constant/const.dart';
@@ -26,6 +27,8 @@ class _LoginPageState extends State<LoginPage>{
   double _headerHeight = 250;
   Key _formKey = GlobalKey<FormState>();
 
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
   TextEditingController userNameController = TextEditingController();
@@ -40,6 +43,13 @@ class _LoginPageState extends State<LoginPage>{
         //     label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
+  }
+
+   saveUserNameAndPassword(String userName, String password) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString('username', userName);
+    prefs.setString('password', password);
+
   }
 
   @override
@@ -131,8 +141,14 @@ class _LoginPageState extends State<LoginPage>{
                                     print("loginStatus status is "+loginStatus.toString());
 
                                     if(loginStatus == true){
+<<<<<<< HEAD
                                       String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
                                       bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken);
+=======
+                                      saveUserNameAndPassword(userNameController.text,passwordController.text);
+                                      int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                                      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
+>>>>>>> 23b96988d4a163a71c9d84e97b52cb790c7560b1
 
                                       if(atricleStatus == true){
                                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
