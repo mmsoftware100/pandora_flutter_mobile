@@ -37,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _enablePullDown = true; // this enable our app to able to pull down
   RefreshController _refreshController = RefreshController(); // the refresh controller
   int curentPage = 1;
-  String? userName;
-  String? password;
+  String? userName ="";
+  String? password ="";
 
   getSahredPreferenesData() async {
     final SharedPreferences prefs = await _prefs;
@@ -88,12 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(FontAwesomeIcons.envelope,color: Colors.white,),
         onPressed: () async{
 
-          if(userName == "" && password == ""){
-            bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: userName!, password: password!);
-
-            if(loginStatus == true){
+          if(userName == "" || password == ""){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-            }
 
           }
           else{
