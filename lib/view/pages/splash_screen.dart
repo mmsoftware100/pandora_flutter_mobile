@@ -32,10 +32,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _SplashScreenState(){
 
+
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _init();
+  }
+
+  void _init()async{
+    getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(1);
     new Timer(const Duration(milliseconds: 2000), () async {
-
-
-      getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(1);
       if(getArticleStatus == true){
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
@@ -52,15 +62,13 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     new Timer(
-      Duration(milliseconds: 10),(){
-        setState(() {
-          _isVisible = true; // Now it is showing fade effect and navigating to Login page
-        });
-      }
+        Duration(milliseconds: 10),(){
+      setState(() {
+        _isVisible = true; // Now it is showing fade effect and navigating to Login page
+      });
+    }
     );
-
   }
-
   @override
   Widget build(BuildContext context) {
 

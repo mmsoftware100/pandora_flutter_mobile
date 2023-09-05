@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       userName = (prefs.getString('username') ?? "");
       password = (prefs.getString('password') ?? "");
-
     });
 
     print("userName is "+userName!);
