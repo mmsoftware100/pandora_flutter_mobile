@@ -68,6 +68,7 @@ dependencies:
   connectivity: any
 
   shared_preferences: ^2.2.1
+  card_loading: ^0.0.1
 
 dev_dependencies:
 

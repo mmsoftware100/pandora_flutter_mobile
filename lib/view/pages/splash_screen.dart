@@ -44,7 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _init()async{
-    getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(1);
+    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+    getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,1);
     new Timer(const Duration(milliseconds: 2000), () async {
       if(getArticleStatus == true){
         Navigator.of(context).pushAndRemoveUntil(

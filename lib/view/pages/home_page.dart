@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () async{
 
           if(userName == "" || password == ""){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
 
           }
           else{
@@ -120,11 +120,12 @@ class _HomeScreenState extends State<HomeScreen> {
   _onLoading() async {
     print("on laoding");
     int? numberOfPage = Provider.of<ArticleProvider>(context, listen: false).number_of_page;
+    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
     if(curentPage! < numberOfPage!){
       setState(() {
         curentPage ++;
       });
-      await Provider.of<ArticleProvider>(context, listen: false).getArticle(curentPage!);
+      await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,curentPage!);
     }
     _refreshController
         .loadComplete(); // after data returned,set the footer state to idle
@@ -155,7 +156,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       curentPage = 1;
     });
-    bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(curentPage!);
+    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+    bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,curentPage!);
 
   }
 

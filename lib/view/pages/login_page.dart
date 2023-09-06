@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/loader.dart';
 import '../../data/constant/const.dart';
 import '../../data/constant/theme_helper.dart';
+import '../../providers/shared_preference_provider.dart';
 import '../widgets/header_widget.dart';
 import 'forgot_password_page.dart';
 import 'home_page.dart';
@@ -17,7 +18,8 @@ import 'profile_page.dart';
 import 'registration_page.dart';
 
 class LoginPage extends StatefulWidget{
-  const LoginPage({Key? key}): super(key:key);
+  bool loginStautus;
+  LoginPage({Key? key,required this.loginStautus}): super(key:key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -60,6 +62,27 @@ class _LoginPageState extends State<LoginPage>{
       body: SingleChildScrollView(
         child: Column(
           children: [
+
+            widget.loginStautus == false ? Divider(
+              thickness: 1,
+            ) : Container(),
+            widget.loginStautus == false ? SizedBox(
+              height: 20,
+            ) : Container(),
+            widget.loginStautus == false ?Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  InkWell(
+                    child: Icon(Icons.arrow_back,color: Colors.black,),
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+            ):Container(),
             Container(
               height: _headerHeight,
               child: HeaderWidget(_headerHeight, true, Icons.login_rounded), //let's create a common header widget
@@ -142,15 +165,23 @@ class _LoginPageState extends State<LoginPage>{
 
                                     if(loginStatus == true){
                                       saveUserNameAndPassword(userNameController.text,passwordController.text);
-                                      int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
-                                      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
+                                      await Provider.of<SharedPreferenceProvider>(context,listen:  false).saveUserNameAndPassword(userNameController.text, passwordController.text);
 
-                                      if(atricleStatus == true){
-                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                      if(widget.loginStautus == false){
+                                        Navigator.pop(context);
                                       }
                                       else{
-                                        _showToast(context,'Article bug');
+                                        int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                                        String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+                                        bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
 
+                                        if(atricleStatus == true){
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                        }
+                                        else{
+                                          _showToast(context,'Article bug');
+
+                                        }
                                       }
 
                                     }

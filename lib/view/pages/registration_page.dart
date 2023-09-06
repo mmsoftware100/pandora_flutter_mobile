@@ -248,7 +248,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                 if(registrationStatus == true){
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (context) => LoginPage()
+                                          builder: (context) => LoginPage(loginStautus: true)
                                       ),
                                           (Route<dynamic> route) => false
                                   );

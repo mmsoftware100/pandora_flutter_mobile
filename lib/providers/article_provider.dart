@@ -16,10 +16,10 @@ class ArticleProvider extends ChangeNotifier{
   int? offset;
   int? number_of_page;
 
-  Future<bool> getArticle(int pageNo) async{
+  Future<bool> getArticle(String token,int pageNo) async{
     bool status = false;
     try{
-      await ApiServices.getAllArticlePerPage(pageNo.toString()).then((value) {
+      await ApiServices.getAllArticlePerPage(token,pageNo.toString()).then((value) {
         Map<String,dynamic> dataResponse = jsonDecode(value);
         print(dataResponse);
         List<dynamic> dlist = dataResponse['data'];
@@ -106,6 +106,18 @@ class ArticleProvider extends ChangeNotifier{
 
     }
     return status;
+  }
+
+  increseCommentCount({required int articleIndex}){
+    articleList[articleIndex].commentCount+1;
+
+    print("before Increase");
+    print(articleList[articleIndex].commentCount);
+
+    print("after Increase");
+    print(articleList[articleIndex].commentCount);
+    notifyListeners();
+
   }
 
 

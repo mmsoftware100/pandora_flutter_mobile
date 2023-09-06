@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,11 +8,14 @@ import '../../components/loader.dart';
 import '../../model/comment_model.dart';
 import '../../providers/article_provider.dart';
 import '../../providers/comment_provider.dart';
+import '../../providers/shared_preference_provider.dart';
 import '../../providers/user_provider.dart';
+import 'login_page.dart';
 
 class CommentsPage extends StatefulWidget {
   String articleId;
-  CommentsPage({Key? key,required this.articleId}) : super(key: key);
+  int articleIndex;
+  CommentsPage({Key? key,required this.articleId,required this.articleIndex}) : super(key: key);
 
   @override
   State<CommentsPage> createState() => _CommentsPageState();
@@ -22,10 +26,12 @@ class _CommentsPageState extends State<CommentsPage> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController _commentController = TextEditingController();
   ScrollController listScrollController = ScrollController();
+  bool getCommentStatus = false;
 
+  /*
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  String? userName;
-  String? password;
+  String? userName ="";
+  String? password ="";
 
   getSahredPreferenesData() async {
     final SharedPreferences prefs = await _prefs;
@@ -38,12 +44,59 @@ class _CommentsPageState extends State<CommentsPage> {
     print("userName is "+userName!);
   }
 
+   */
+
+  getComment()async{
+    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+    bool status = await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!,int.parse(widget.articleId));
+    setState(() {
+      getCommentStatus = status;
+    });
+
+    print("Text Page Get Comment list is "+Provider.of<CommentProvider>(context,listen: false).commentList.toString());
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getComment();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
       ),
-      body: SafeArea(
+      body: getCommentStatus == false ?  ListView.builder(
+        padding: const EdgeInsets.all(20),
+        itemCount: 3,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CardLoading(
+                height: 30,
+                width: size.width * .2,
+                padding: const EdgeInsets.only(bottom: 10),
+                borderRadius: 15,
+              ),
+              CardLoading(
+                height: size.height * .15,
+                padding: const EdgeInsets.only(bottom: 10),
+                borderRadius: 15,
+              ),
+              CardLoading(
+                height: size.height * .1,
+                padding: const EdgeInsets.only(bottom: 20),
+                borderRadius: 15,
+              ),
+            ],
+          );
+        },
+      )
+          : Provider.of<CommentProvider>(context,listen: true).commentList != [] ?SafeArea(
           child: Stack(children: [
             Positioned(
                 top:0,bottom:70,left:0, right:0,
@@ -111,19 +164,24 @@ class _CommentsPageState extends State<CommentsPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(right: 5.0),
-                                                  child: Text(
-                                                    e.user!.name,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                /*
+                                            Container(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  /*
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        margin: const EdgeInsets.only(right: 5.0),
+                                                        child: Text(
+                                                          e.user!.name,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      /*
         Text(
           '@$name · $timeAgo',
           style: TextStyle(
@@ -133,37 +191,57 @@ class _CommentsPageState extends State<CommentsPage> {
 
          */
 
-                                                Text(
-                                                  e.createdAt.split(".").first,
-                                                  style: TextStyle(
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                                Spacer(),
-                                                /*
-                                                IconButton(
-                                                  icon: Icon(
-                                                    FontAwesomeIcons.angleDown,
-                                                    size: 14.0,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  onPressed: () {},
-                                                ),
 
-                                                 */
-                                              ],
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                e.content,
-                                                style: TextStyle(fontSize: 14,color: Colors.white),
-                                                overflow: TextOverflow.clip,
+                                                      // Spacer(),
+                                                      /*
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      FontAwesomeIcons.angleDown,
+                                                      size: 14.0,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    onPressed: () {},
+                                                  ),
+
+                                                   */
+                                                    ],
+                                                  ),
+
+                                                   */
+                                                  Container(
+                                                    margin: const EdgeInsets.only(right: 5.0),
+                                                    child: Text(
+                                                      e.user!.name,
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      e.content,
+                                                      style: TextStyle(fontSize: 14,color: Colors.white),
+                                                      overflow: TextOverflow.clip,
+                                                    ),
+                                                    //padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                                    // width: 200,
+                                                    //decoration:
+                                                    //BoxDecoration(color: Color(0xffaeaeae), borderRadius: BorderRadius.circular(8)),
+                                                    //margin: EdgeInsets.only(left: 10),
+                                                  ),                                            ],
                                               ),
                                               padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                                              width: 200,
+                                              // width: 200,
                                               decoration:
                                               BoxDecoration(color: Color(0xffaeaeae), borderRadius: BorderRadius.circular(8)),
                                               margin: EdgeInsets.only(left: 10),
+                                            ),
+                                            Text(
+                                              e.createdAt.split(".").first,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -217,7 +295,7 @@ class _CommentsPageState extends State<CommentsPage> {
                 child:buildInput()
             )
           ],)
-      ),
+      ) : Container(),
     );
   }
 
@@ -286,24 +364,41 @@ class _CommentsPageState extends State<CommentsPage> {
                 onPressed: ()async{
                   print("comment create");
 
-                  if(_commentController.text.length > 0){
-                    int userId = Provider.of<UserProvider>(context, listen:  false).user.id;
-                    print(userId);
-                    String accessToke = Provider.of<UserProvider>(context, listen: false).user.accessToken;
-                    //String articleId = Provider.of<ArticleProvider>(context, listen: false).articleList[int.parse(widget.articleId)].id.toString();
-                    print(widget.articleId);
-                    Provider.of<CommentProvider>(context, listen: false).addComment(articleId: int.parse(widget.articleId), userId: userId, comment: _commentController.text, user: Provider.of<UserProvider>(context, listen:  false).user);
+                  await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+                  String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
+                  String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
 
-                    // show loading indicator
-                    Dialogs.showLoadingDialog(context, _keyLoader);
+                  if(username == "" || password == ""){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
 
-                    await Provider.of<CommentProvider>(context, listen:  false).createComment(accessToke, widget.articleId, _commentController.text);
-
-                    // hide loading indicator
-                    Navigator.pop(context);
-
-                    _commentController.clear();
                   }
+                  else{
+                    bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username, password: password);
+
+                    if(loginStatus == true){
+                      if(_commentController.text.length > 0){
+                        int userId = Provider.of<UserProvider>(context, listen:  false).user.id;
+                        print(userId);
+                        String accessToke = Provider.of<UserProvider>(context, listen: false).user.accessToken;
+                        //String articleId = Provider.of<ArticleProvider>(context, listen: false).articleList[int.parse(widget.articleId)].id.toString();
+                        print(widget.articleId);
+                        Provider.of<CommentProvider>(context, listen: false).addComment(articleId: int.parse(widget.articleId), userId: userId, comment: _commentController.text, user: Provider.of<UserProvider>(context, listen:  false).user);
+
+                        Provider.of<ArticleProvider>(context,listen: false).increseCommentCount(articleIndex: widget.articleIndex);
+                        // show loading indicator
+                        Dialogs.showLoadingDialog(context, _keyLoader);
+
+                        await Provider.of<CommentProvider>(context, listen:  false).createComment(accessToke, widget.articleId, _commentController.text);
+
+                        // hide loading indicator
+                        Navigator.pop(context);
+
+                        _commentController.clear();
+                      }
+                    }
+                  }
+
+
 
 
 

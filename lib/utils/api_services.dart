@@ -36,17 +36,18 @@ class ApiServices{
     return response.body;
   }
 
-  static Future<dynamic> getAllArticlePerPage(String pageNumber)async{
+  static Future<dynamic> getAllArticlePerPage(String token,String pageNumber)async{
     // print(token);
     http.Response response = await http.get(Uri.parse(URLs.article_url+"?page="+pageNumber),
-      /*
+
         headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     }
 
-         */
+
     );
     print(response.body);
     return response.body;

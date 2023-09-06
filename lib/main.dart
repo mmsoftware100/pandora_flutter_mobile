@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pandora_flutter_mobile/providers/article_provider.dart';
 import 'package:pandora_flutter_mobile/providers/comment_provider.dart';
+import 'package:pandora_flutter_mobile/providers/shared_preference_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:pandora_flutter_mobile/providers/vote_provider.dart';
 import 'package:pandora_flutter_mobile/tweets.dart';
@@ -45,6 +46,8 @@ void main()async {
         ChangeNotifierProvider(create: (_) => ArticleProvider()),
         ChangeNotifierProvider(create: (_) => CommentProvider()),
         ChangeNotifierProvider(create: (_) => VoteProvider()),
+        ChangeNotifierProvider(create: (_) => SharedPreferenceProvider()),
+
 
 
 

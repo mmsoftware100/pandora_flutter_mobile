@@ -82,7 +82,7 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
                     if(status == true){
                       _showToast(context,"Post updated");
                       int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
-                      await Provider.of<ArticleProvider>(context, listen: false).getArticle(currentPage!);
+                      await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
                       Navigator.pop(context);
                     }
                   },

@@ -161,6 +161,9 @@ class Tweet extends StatelessWidget {
               child: tweetIconButton(FontAwesomeIcons.comment, this.comments),
             onTap: () async{
 
+              Navigator.push(context , MaterialPageRoute(builder: (context)=> CommentsPage(articleId: articleId ,articleIndex: index,)));
+
+              /*
                 String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
 
               bool status = await Provider.of<CommentProvider>(context, listen: false).getComment(accessToken!,int.parse(articleId));
@@ -169,6 +172,8 @@ class Tweet extends StatelessWidget {
 
               if(status == true)
                 Navigator.push(context , MaterialPageRoute(builder: (context)=> CommentsPage(articleId: articleId )));
+
+               */
 
             },
           ),
