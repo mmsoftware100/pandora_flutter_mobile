@@ -109,7 +109,7 @@ class ArticleProvider extends ChangeNotifier{
   }
 
   increseCommentCount({required int articleIndex}){
-    articleList[articleIndex].commentCount+1;
+    articleList[articleIndex].commentCount += 1;
 
     print("before Increase");
     print(articleList[articleIndex].commentCount);
