@@ -120,6 +120,19 @@ class ArticleProvider extends ChangeNotifier{
 
   }
 
+  voteReaction({required int articleIndex, required int voteType}){
+    articleList[articleIndex].userVote = voteType;
+
+    if(voteType == 0){
+      articleList[articleIndex].downVote += 1;
+    }
+    else{
+      articleList[articleIndex].upVote += 1;
+    }
+    notifyListeners();
+
+  }
+
 
 
 }
