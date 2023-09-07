@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pandora_flutter_mobile/view/pages/profile_page.dart';
@@ -316,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onRefresh: _onRefresh, // we are going to inplement _onRefresh and _onLoading below our build method
       onLoading: _onLoading,
     child: Provider.of<ArticleProvider>(context, listen: true).articleList.length == 0 ? Center(
-      child: Text("No data".tr()),
+      child: Text("No data"),
     ):
     ListView.separated(
     // physics: BouncingScrollPhysics(),
