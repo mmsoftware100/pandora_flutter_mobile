@@ -12,6 +12,7 @@ import '../../components/constants.dart';
 import '../../components/custom_fuction.dart';
 import '../../data/constant/global.dart';
 import '../../providers/article_provider.dart';
+import '../../providers/shared_preference_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../tweet.dart';
 import '../../tweets.dart';
@@ -37,24 +38,24 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _enablePullDown = true; // this enable our app to able to pull down
   RefreshController _refreshController = RefreshController(); // the refresh controller
   int curentPage = 1;
-  String? userName ="";
-  String? password ="";
-
-  getSahredPreferenesData() async {
-    final SharedPreferences prefs = await _prefs;
-    setState(() {
-      userName = (prefs.getString('username') ?? "");
-      password = (prefs.getString('password') ?? "");
-    });
-
-    print("userName is "+userName!);
-  }
+  // String? userName ="";
+  // String? password ="";
+  //
+  // getSahredPreferenesData() async {
+  //   final SharedPreferences prefs = await _prefs;
+  //   setState(() {
+  //     userName = (prefs.getString('username') ?? "");
+  //     password = (prefs.getString('password') ?? "");
+  //   });
+  //
+  //   print("userName is "+userName!);
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
 
-    getSahredPreferenesData();
+    // getSahredPreferenesData();
     super.initState();
   }
 
@@ -87,12 +88,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(FontAwesomeIcons.envelope,color: Colors.white,),
         onPressed: () async{
 
-          if(userName == "" || password == ""){
+          await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+          String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
+          String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
+
+
+          if(username == "" || password == ""){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
 
           }
           else{
-            bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: userName!, password: password!);
+            bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username!, password: password!);
 
             if(loginStatus == true){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateArticlePage()));

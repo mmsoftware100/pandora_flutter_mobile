@@ -5,10 +5,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pandora_flutter_mobile/providers/article_provider.dart';
 import 'package:pandora_flutter_mobile/providers/comment_provider.dart';
+import 'package:pandora_flutter_mobile/providers/shared_preference_provider.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:pandora_flutter_mobile/providers/vote_provider.dart';
 import 'package:pandora_flutter_mobile/view/pages/article/update_article_page.dart';
 import 'package:pandora_flutter_mobile/view/pages/comments_page.dart';
+import 'package:pandora_flutter_mobile/view/pages/login_page.dart';
 import 'package:provider/provider.dart';
 
 import 'components/constants.dart';
@@ -187,26 +189,22 @@ class Tweet extends StatelessWidget {
           Provider.of<ArticleProvider>(context,listen: true).articleList[this.index].userVote != 0 ?InkWell(
               child: tweetIconButton(FontAwesomeIcons.thumbsDown, this.heartBroken),
           onTap:()async{
-                if(Provider.of<ArticleProvider>(context,listen: false).articleList[this.index].userVote ==-1){
-                  Provider.of<ArticleProvider>(context,listen: false).voteReaction(articleIndex: this.index, voteType: 0);
 
-                  //0 for down vote and 1 for up vote
+            await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+            String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
+            String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
 
 
-                  String  accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
-                  String articleId = Provider.of<ArticleProvider>(context,listen: false).articleList[this.index].id.toString();
+            if(username == "" || password == ""){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
 
-                  bool status = await Provider.of<VoteProvider>(context, listen: false).createVote(accessToken!,articleId, "0");
-                  print(" create down Vote is "+status.toString());
-                }
-          }) : tweetIconButton(FontAwesomeIcons.solidThumbsDown, this.heartBroken),
+            }
+            else{
 
-          // up vote icon
-          Provider.of<ArticleProvider>(context,listen: true).articleList[this.index].userVote != 1 ? InkWell(
-              child: tweetIconButton(FontAwesomeIcons.thumbsUp, this.favorites),
-            onTap: ()async{
+              bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username!, password: password!);
+
               if(Provider.of<ArticleProvider>(context,listen: false).articleList[this.index].userVote ==-1){
-                Provider.of<ArticleProvider>(context,listen: false).voteReaction(articleIndex: this.index, voteType: 1);
+                Provider.of<ArticleProvider>(context,listen: false).voteReaction(articleIndex: this.index, voteType: 0);
 
                 //0 for down vote and 1 for up vote
 
@@ -214,8 +212,40 @@ class Tweet extends StatelessWidget {
                 String  accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
                 String articleId = Provider.of<ArticleProvider>(context,listen: false).articleList[this.index].id.toString();
 
-                bool status = await Provider.of<VoteProvider>(context, listen: false).createVote(accessToken!,articleId, "1");
-                print(" create up Vote is "+status.toString());
+                bool status = await Provider.of<VoteProvider>(context, listen: false).createVote(accessToken!,articleId, "0");
+                print(" create down Vote is "+status.toString());
+              }
+            }
+          }) : tweetIconButton(FontAwesomeIcons.solidThumbsDown, this.heartBroken),
+
+          // up vote icon
+          Provider.of<ArticleProvider>(context,listen: true).articleList[this.index].userVote != 1 ? InkWell(
+              child: tweetIconButton(FontAwesomeIcons.thumbsUp, this.favorites),
+            onTap: ()async{
+
+              await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+              String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
+              String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
+              if(username == "" || password == ""){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+
+              }
+              else{
+
+                bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username!, password: password!);
+
+                if(Provider.of<ArticleProvider>(context,listen: false).articleList[this.index].userVote ==-1){
+                  Provider.of<ArticleProvider>(context,listen: false).voteReaction(articleIndex: this.index, voteType: 1);
+
+                  //0 for down vote and 1 for up vote
+
+
+                  String  accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+                  String articleId = Provider.of<ArticleProvider>(context,listen: false).articleList[this.index].id.toString();
+
+                  bool status = await Provider.of<VoteProvider>(context, listen: false).createVote(accessToken!,articleId, "1");
+                  print(" create up Vote is "+status.toString());
+                }
               }
             },
           ): tweetIconButton(FontAwesomeIcons.solidThumbsUp, this.favorites),

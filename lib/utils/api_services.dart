@@ -96,6 +96,9 @@ class ApiServices{
   }
 
   static Future<dynamic> createVote(token,body)async{
+    print("Hello create vote is");
+    print(token);
+    print(body);
     http.Response response = await http.post(Uri.parse(URLs.votes_url),headers: {
       'Authorization': 'Bearer $token',
     },
