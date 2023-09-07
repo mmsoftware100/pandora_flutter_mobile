@@ -144,7 +144,7 @@ class _CommentsPageState extends State<CommentsPage> {
         backgroundImage: NetworkImage(this.avatar),
       ),*/
                                           child:CachedNetworkImage(
-                                            imageUrl: e.user!.photoUrl,
+                                            imageUrl: e.user!.photoUrl != "photo_url" ? e.user!.photoUrl : "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg",
                                             imageBuilder: (context, imageProvider) => Container(
                                               // width: 80.0,
                                               // height: 80.0,

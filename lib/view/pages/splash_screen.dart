@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../data/constant/const.dart';
 import '../../providers/article_provider.dart';
+import '../../providers/shared_preference_provider.dart';
 import '../../providers/user_provider.dart';
 import 'login_page.dart';
 
@@ -44,6 +45,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _init()async{
+    await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+    String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
+    String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
+    bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username, password: password);
+
+
     String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
     getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,1);
     new Timer(const Duration(milliseconds: 2000), () async {

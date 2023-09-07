@@ -142,6 +142,8 @@ class UserProvider extends ChangeNotifier{
         print(dataResponse);
         user = UserModel.fromJson(dataResponse['data']);
         print("Hey");
+        print(user.photoUrl);
+        print("Photo url is");
         print(user.accessToken);
         notifyListeners();
       });
@@ -151,5 +153,10 @@ class UserProvider extends ChangeNotifier{
       status = false;
     }
     return status;
+  }
+
+  userClear(){
+    user = UserModel(id: 0, uid: '', name: '', phone: '', city: '', age: '', gender: '', photoUrl: '', email: '', emailVerifiedAt: '', roleId: 0, createdAt: '', updatedAt: '', accessToken: '', userStatistics: []);
+    notifyListeners();
   }
 }

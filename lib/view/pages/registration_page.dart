@@ -240,7 +240,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                 // show loading indicator
                                 Dialogs.showLoadingDialog(context, _keyLoader);
 
-                                bool registrationStatus = await Provider.of<UserProvider>(context, listen: false).registration(firstNameController.text,emailController.text,passwordController.text);
+                                bool registrationStatus = await Provider.of<UserProvider>(context, listen: false).registration(firstNameController.text+" "+lastNameController.text,emailController.text,passwordController.text);
 
                                 // hide loading indicator
                                 Navigator.pop(context);

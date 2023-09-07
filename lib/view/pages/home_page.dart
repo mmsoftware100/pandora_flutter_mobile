@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pandora_flutter_mobile/view/pages/profile_page.dart';
+import 'package:pandora_flutter_mobile/view/pages/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  int _selectedIndex = 0; //New
   bool _enablePullDown = true; // this enable our app to able to pull down
   RefreshController _refreshController = RefreshController(); // the refresh controller
   int curentPage = 1;
@@ -50,6 +54,33 @@ class _HomeScreenState extends State<HomeScreen> {
   //
   //   print("userName is "+userName!);
   // }
+
+  _showDialog(BuildContext context){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: new Text("Log out"),
+          content: new Text("Do you quit ?"),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text("Yes"),
+              onPressed: ()async{
+                await Provider.of<SharedPreferenceProvider>(context,listen: false).saveUserNameAndPassword("", "");
+                Provider.of<UserProvider>(context,listen: false).userClear();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> SplashScreen(title: "")), (route) => false);
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text("No"),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        )
+    );
+  }
 
   @override
   void initState() {
@@ -67,8 +98,21 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
+          /*
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/pandora_box.png'),
+          ),
+
+           */
+          child: Container(
+            width: 80.0,
+            height: 80.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(Provider.of<UserProvider>(context,listen: true).user!.photoUrl != "photo_url" ? Provider.of<UserProvider>(context,listen: false).user!.photoUrl :'https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg'),
+              ),
+            ),
           ),
         ),
         title: Text(
@@ -78,6 +122,14 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Provider.of<SharedPreferenceProvider>(context,listen:  true).userName != "" ? IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              _showDialog(context);
+            },
+          ): Container()
+        ],
       ),
       // body: listOfTweets(),
 
@@ -106,12 +158,13 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
+
       /*
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildBottomIconButton(Icons.home, parseColor("#69001e")),
+            buildBottomIconButton(Icons.home, parseColor("#69001e"),),
             buildBottomIconButton(Icons.search, parseColor("#69001e")),
             buildBottomIconButton(Icons.notifications, parseColor("#69001e")),
             buildBottomIconButton(Icons.mail_outline, parseColor("#69001e")),
@@ -120,7 +173,50 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
        */
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex, //New
+        onTap: _onItemTapped,         //New
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
+        ],
+      ),
+
+
+
     );
+  }
+
+
+//New
+  void _onItemTapped(int index)async {
+    await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+    if(index != 1){
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+    else{
+
+      String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
+      String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
+
+      if(username == "" || password == ""){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+
+      }
+      else{
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
+
+      }
+    }
+
   }
 
   _onLoading() async {
@@ -141,6 +237,12 @@ class _HomeScreenState extends State<HomeScreen> {
     print("on refresh");
 
     setState(() {
+      curentPage = 1;
+    });
+    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+    bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,curentPage!);
+
+    setState(() {
       Future<int> a =
       CustomFunction().checkInternetConnection(); // check internet access
       a.then((value) {
@@ -148,9 +250,10 @@ class _HomeScreenState extends State<HomeScreen> {
           CustomFunction().showToast(
               message:
               'No Internet Connection'); // will show a toast if there is no internet
-        } else {
+        } else{
           // RefreshPage(); // if you want to refresh the whole page you can put the page name or
           //txtlist(); // if you only want to refresh the list you can place this, so the two can be inside setState
+
 
 
           _refreshController.refreshCompleted();
@@ -159,11 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
-    setState(() {
-      curentPage = 1;
-    });
-    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
-    bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,curentPage!);
+
 
   }
 
@@ -173,7 +272,9 @@ class _HomeScreenState extends State<HomeScreen> {
         icon,
         color: color,
       ),
-      onPressed: () {},
+      onPressed: () {
+
+      },
     );
   }
 
@@ -223,6 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // return tweets[index];
       return  Tweet(
         // avatar: 'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
+        user: Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!,
         avatar:Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.photoUrl,
         username: Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!.name,
         name: 'FlutterDev',

@@ -15,10 +15,12 @@ import 'package:provider/provider.dart';
 
 import 'components/constants.dart';
 import 'data/constant/global.dart';
+import 'model/user_model.dart';
 import 'view/widgets/text_description.dart';
 
 
 class Tweet extends StatelessWidget {
+  final UserModel user;
   final String avatar;
   final String username;
   final String name;
@@ -31,6 +33,7 @@ class Tweet extends StatelessWidget {
   final int index;
 
   Tweet({
+        required this.user,
         required this.avatar,
         required this.username,
         required this.name,
@@ -65,7 +68,7 @@ class Tweet extends StatelessWidget {
         backgroundImage: NetworkImage(this.avatar),
       ),*/
       child:CachedNetworkImage(
-        imageUrl: this.avatar,
+        imageUrl: this.avatar != "photo_url" ? this.avatar : "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg",
         imageBuilder: (context, imageProvider) => Container(
           // width: 80.0,
           // height: 80.0,
@@ -126,16 +129,16 @@ class Tweet extends StatelessWidget {
           ),
         ),
         Spacer(),
-        IconButton(
+        this.user.id == Provider.of<UserProvider>(context,listen: true).user.id ? IconButton(
           icon: Icon(
-            FontAwesomeIcons.angleDown,
+            FontAwesomeIcons.bars,
             size: 14.0,
             color: Colors.grey,
           ),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (content)=>UpdateArticlePage(articleId: int.parse(this.articleId), content: this.text,)));
           },
-        ),
+        ) : Container(),
       ],
     );
   }
