@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pandora_flutter_mobile/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/header_widget.dart';
 import 'forgot_password_page.dart';
@@ -409,9 +411,9 @@ class _ProfilePageState extends State<ProfilePage>{
                     child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,),
                   ),
                   SizedBox(height: 20,),
-                  Text('Mr. Donald Trump', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                  Text(Provider.of<UserProvider>(context,listen: false).user.name, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
                   SizedBox(height: 20,),
-                  Text('Former President', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  //Text('Former President', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Container(
                     padding: EdgeInsets.all(10),
@@ -446,17 +448,17 @@ class _ProfilePageState extends State<ProfilePage>{
                                               horizontal: 12, vertical: 4),
                                           leading: Icon(Icons.my_location),
                                           title: Text("Location"),
-                                          subtitle: Text("USA"),
+                                          subtitle: Text("Myanmar"),
                                         ),
                                         ListTile(
                                           leading: Icon(Icons.email),
                                           title: Text("Email"),
-                                          subtitle: Text("donaldtrump@gmail.com"),
+                                          subtitle: Text(Provider.of<UserProvider>(context,listen: false).user.email),
                                         ),
                                         ListTile(
                                           leading: Icon(Icons.phone),
                                           title: Text("Phone"),
-                                          subtitle: Text("99--99876-56"),
+                                          subtitle: Text("**-*********"),
                                         ),
                                         ListTile(
                                           leading: Icon(Icons.person),
