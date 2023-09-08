@@ -1,4 +1,5 @@
 
+import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,6 +15,7 @@ import 'package:pandora_flutter_mobile/view/pages/login_page.dart';
 import 'package:provider/provider.dart';
 
 import 'components/constants.dart';
+import 'components/sign_in_needed_alert_dialog.dart';
 import 'data/constant/global.dart';
 import 'model/user_model.dart';
 import 'view/widgets/text_description.dart';
@@ -169,7 +171,18 @@ class Tweet extends StatelessWidget {
               child: tweetIconButton(FontAwesomeIcons.comment, this.comments),
             onTap: () async{
 
-              Navigator.push(context , MaterialPageRoute(builder: (context)=> CommentsPage(articleId: articleId ,articleIndex: index,)));
+              //Navigator.push(context , MaterialPageRoute(builder: (context)=> CommentsPage(articleId: articleId ,articleIndex: index,)));
+
+              showFlexibleBottomSheet(
+                minHeight: 0,
+                initHeight: 0.8,
+                maxHeight: 0.8,
+                context: context,
+                builder: _buildBottomSheet,
+                isExpand: false,
+              );
+
+
 
               /*
                 String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
@@ -199,7 +212,8 @@ class Tweet extends StatelessWidget {
 
 
             if(username == "" || password == ""){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+              MyAlertDialog.ShowDialog(context);
 
             }
             else{
@@ -230,7 +244,8 @@ class Tweet extends StatelessWidget {
               String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
               String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
               if(username == "" || password == ""){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+                // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+                MyAlertDialog.ShowDialog(context);
 
               }
               else{
@@ -278,5 +293,22 @@ class Tweet extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildBottomSheet(
+      BuildContext context,
+      ScrollController scrollController,
+      double bottomSheetOffset,
+      ) {
+    // return Material(
+    //   child: Container(
+    //     child: ListView(
+    //         controller: scrollController,
+    //         shrinkWrap: true,
+    //     ),
+    //   ),
+    // );
+
+    return CommentsPage(articleId: this.articleId, articleIndex: this.index);
   }
 }

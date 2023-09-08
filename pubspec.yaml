@@ -70,6 +70,8 @@ dependencies:
   shared_preferences: ^2.2.1
   card_loading: ^0.0.1
 
+  bottom_sheet:
+
 dev_dependencies:
 
   # json serialization

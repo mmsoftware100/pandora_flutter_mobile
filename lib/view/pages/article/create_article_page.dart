@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -147,11 +148,89 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                 ),
               ),
             ),
+
+             */
+
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                  margin: const EdgeInsets.all(10.0),
+                  /*child: CircleAvatar(
+        backgroundImage: NetworkImage(this.avatar),
+      ),*/
+                  child:CachedNetworkImage(
+                    imageUrl: Provider.of<UserProvider>(context,listen: true).user.photoUrl != "photo_url" ? Provider.of<UserProvider>(context,listen: true).user.photoUrl : "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg",
+                    imageBuilder: (context, imageProvider) => Container(
+                      // width: 80.0,
+                      // height: 80.0,
+                      width: MediaQuery.of(context).size.width / 10,
+                      height: MediaQuery.of(context).size.width / 10,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  )
+              ),
+              title: Text(Provider.of<UserProvider>(context,listen: true).user.name),
+              /*
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.grey),
+                        onPressed: () {},
+                        icon: Icon(Icons.group),
+                        label: Row(
+                          children: [
+                            Text('Friends'),
+                            Expanded(
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.grey),
+                        onPressed: () {},
+                        icon: Icon(Icons.add),
+                        label: Row(
+                          children: [
+                            Text('Album'),
+                            Expanded(
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+               */
+            ),
             const SizedBox(
               height: 20,
             ),
 
-             */
+
             TextFormField(
               maxLines: 15,
               controller: contentController,

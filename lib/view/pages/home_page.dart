@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/constants.dart';
 import '../../components/custom_fuction.dart';
+import '../../components/sign_in_needed_alert_dialog.dart';
 import '../../data/constant/global.dart';
 import '../../providers/article_provider.dart';
 import '../../providers/shared_preference_provider.dart';
@@ -144,7 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
           if(username == "" || password == ""){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+            MyAlertDialog.ShowDialog(context);
 
           }
           else{

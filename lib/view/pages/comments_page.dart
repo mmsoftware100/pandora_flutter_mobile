@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/loader.dart';
+import '../../components/sign_in_needed_alert_dialog.dart';
 import '../../model/comment_model.dart';
 import '../../providers/article_provider.dart';
 import '../../providers/comment_provider.dart';
@@ -67,8 +68,8 @@ class _CommentsPageState extends State<CommentsPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-      ),
+      // appBar: AppBar(
+      // ),
       body: getCommentStatus == false ?  ListView.builder(
         padding: const EdgeInsets.all(20),
         itemCount: 3,
@@ -369,7 +370,8 @@ class _CommentsPageState extends State<CommentsPage> {
                   String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
 
                   if(username == "" || password == ""){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
+                    MyAlertDialog.ShowDialog(context);
 
                   }
                   else{
