@@ -57,6 +57,9 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 InkWell(

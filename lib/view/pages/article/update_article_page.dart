@@ -60,6 +60,9 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 InkWell(
