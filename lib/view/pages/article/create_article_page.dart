@@ -223,7 +223,7 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                   ],
                 ),
               ),
-              
+
                */
             ),
             const SizedBox(
