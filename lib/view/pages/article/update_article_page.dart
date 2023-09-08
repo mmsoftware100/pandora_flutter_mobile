@@ -96,7 +96,7 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
               thickness: 1,
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             /*
             ListTile(
@@ -157,7 +157,7 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
 
              */
             TextFormField(
-              maxLines: 15,
+              maxLines: 10,
               controller: contentController,
               decoration: InputDecoration(
                 border: InputBorder.none,

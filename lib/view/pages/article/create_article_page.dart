@@ -227,12 +227,12 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                */
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
 
 
             TextFormField(
-              maxLines: 15,
+              maxLines: 1,
               controller: contentController,
               decoration: InputDecoration(
                 border: InputBorder.none,

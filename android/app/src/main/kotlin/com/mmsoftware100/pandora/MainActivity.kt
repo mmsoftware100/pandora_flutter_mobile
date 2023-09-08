@@ -1,4 +1,4 @@
-package com.mmsoftware100.pandorafluttermobile
+package com.mmsoftware100.pandora
 
 import io.flutter.embedding.android.FlutterActivity
 
