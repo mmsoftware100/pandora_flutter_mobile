@@ -42,7 +42,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
               letterSpacing: 1,
               fontSize: newsFontSize,
               fontWeight: FontWeight.normal),
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.left,
       )
           : new Column(
         children: <Widget>[

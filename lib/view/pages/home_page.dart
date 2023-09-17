@@ -20,6 +20,7 @@ import '../../tweet.dart';
 import '../../tweets.dart';
 import '../widgets/image_view_widget.dart';
 import '../widgets/pdf_widget.dart';
+import '../widgets/post_widget.dart';
 import '../widgets/text_description.dart';
 import '../widgets/video_view_widget.dart';
 import 'comments_page.dart';
@@ -136,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body:  listOfArticles(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: parseColor("#69001e"),
-        child: Icon(FontAwesomeIcons.envelope,color: Colors.white,),
+        child: Icon(FontAwesomeIcons.pen,color: Colors.white,),
         onPressed: () async{
 
           await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
@@ -174,12 +175,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
        */
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex, //New
         onTap: _onItemTapped,         //New
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            // icon: Icon(Icons.home),
+            icon: ImageIcon(
+              AssetImage("assets/pandora_box.png"),
+              color: Color(0xFF3A5A98),
+            ),
+            label: 'Pandora Box',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
@@ -322,6 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // physics: BouncingScrollPhysics(),
     itemBuilder: (BuildContext context, int index) {
       // return tweets[index];
+      /*
       return  Tweet(
         // avatar: 'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
         user: Provider.of<ArticleProvider>(context,listen: true).articleList[index].user!,
@@ -334,6 +341,12 @@ class _HomeScreenState extends State<HomeScreen> {
         heartBroken:  Provider.of<ArticleProvider>(context,listen: true).articleList[index].downVote.toString(),
         favorites: Provider.of<ArticleProvider>(context,listen: true).articleList[index].upVote.toString(),
         articleId: Provider.of<ArticleProvider>(context,listen: true).articleList[index].id.toString(),
+        index: index,
+      );
+
+       */
+      return PostWidget(
+        article: Provider.of<ArticleProvider>(context,listen: true).articleList[index],
         index: index,
       );
     },
