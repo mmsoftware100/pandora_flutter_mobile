@@ -123,6 +123,7 @@ class _LoginPageState extends State<LoginPage>{
                               decoration: ThemeHelper().inputBoxDecorationShaddow(),
                             ),
                             SizedBox(height: 15.0),
+                            /*
                             Container(
                               margin: EdgeInsets.fromLTRB(10,0,10,20),
                               alignment: Alignment.topRight,
@@ -134,6 +135,8 @@ class _LoginPageState extends State<LoginPage>{
                                 ),
                               ),
                             ),
+
+                             */
                             Container(
                               decoration: ThemeHelper().buttonBoxDecoration(context),
                               child: ElevatedButton(
