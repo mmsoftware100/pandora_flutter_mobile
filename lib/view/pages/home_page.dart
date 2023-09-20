@@ -122,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        /*
         actions: [
           Provider.of<SharedPreferenceProvider>(context,listen:  true).userName != "" ? IconButton(
             icon: Icon(Icons.logout),
@@ -130,6 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ): Container()
         ],
+
+         */
       ),
       // body: listOfTweets(),
 

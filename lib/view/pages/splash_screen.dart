@@ -45,19 +45,22 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _init()async{
+    String accessToken = "";
     await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
     String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
     String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
     bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username, password: password);
 
 
-    String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+    accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
     getArticleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,1);
     new Timer(const Duration(milliseconds: 2000), () async {
+
       if(getArticleStatus == true){
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
       }
+
       /*
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(

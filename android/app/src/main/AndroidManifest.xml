@@ -2,7 +2,6 @@
     package="com.mmsoftware100.pandora">
    <application
         android:label="Pandora"
-        android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

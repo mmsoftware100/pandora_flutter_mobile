@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/color_constants.dart';
 import '../../components/loader.dart';
 import '../../components/sign_in_needed_alert_dialog.dart';
 import '../../model/comment_model.dart';
@@ -97,7 +98,9 @@ class _CommentsPageState extends State<CommentsPage> {
           );
         },
       )
-          : Provider.of<CommentProvider>(context,listen: true).commentList != [] ?SafeArea(
+          : Provider.of<CommentProvider>(context,listen: true).commentList != [] ?
+          /*
+      SafeArea(
           child: Stack(children: [
             Positioned(
                 top:0,bottom:70,left:0, right:0,
@@ -296,9 +299,173 @@ class _CommentsPageState extends State<CommentsPage> {
                 child:buildInput()
             )
           ],)
-      ) : Container(),
+      )
+
+           */
+
+      SafeArea(
+        child: Stack(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                // List of messages
+                buildListMessage(),
+
+                // Input content
+                buildInput(),
+
+              ],
+            ),
+
+            // Loading
+            buildLoading()
+          ],
+        ),
+      )
+          : Container(),
     );
   }
+
+  Widget buildListMessage() {
+    return Flexible(
+      child: Provider.of<CommentProvider>(context,listen: true).commentList.length > 0
+          ? ListView.builder(
+        padding: EdgeInsets.all(10),
+        itemBuilder: (context, index) => buildItem(index, Provider.of<CommentProvider>(context,listen: true).commentList[index]),
+        itemCount: Provider.of<CommentProvider>(context,listen: true).commentList.length,
+        // reverse: true,
+        controller: listScrollController,
+      )
+          : Center(
+        child: CircularProgressIndicator(
+          color: ColorConstants.themeColor,
+        ),
+      ),
+    );
+  }
+
+  Widget buildItem(int index, CommentModel document) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: const EdgeInsets.all(10.0),
+                /*child: CircleAvatar(
+        backgroundImage: NetworkImage(this.avatar),
+      ),*/
+                child:CachedNetworkImage(
+                  imageUrl: document.user!.photoUrl != "photo_url" ? document.user!.photoUrl : "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg",
+                  imageBuilder: (context, imageProvider) => Container(
+                    // width: 80.0,
+                    // height: 80.0,
+                    width: MediaQuery.of(context).size.width / 10,
+                    height: MediaQuery.of(context).size.width / 10,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.cover),
+                    ),
+                  ),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                )
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /*
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        margin: const EdgeInsets.only(right: 5.0),
+                                                        child: Text(
+                                                          e.user!.name,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      /*
+        Text(
+          '@$name · $timeAgo',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+
+         */
+
+
+                                                      // Spacer(),
+                                                      /*
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      FontAwesomeIcons.angleDown,
+                                                      size: 14.0,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    onPressed: () {},
+                                                  ),
+
+                                                   */
+                                                    ],
+                                                  ),
+
+                                                   */
+                        Container(
+                          margin: const EdgeInsets.only(right: 5.0),
+                          child: Text(
+                            document.user!.name,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            document.content,
+                            style: TextStyle(fontSize: 14,color: Colors.white),
+                            overflow: TextOverflow.clip,
+                          ),
+                          //padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          // width: 200,
+                          //decoration:
+                          //BoxDecoration(color: Color(0xffaeaeae), borderRadius: BorderRadius.circular(8)),
+                          //margin: EdgeInsets.only(left: 10),
+                        ),                                            ],
+                    ),
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    // width: 200,
+                    decoration:
+                    BoxDecoration(color: Color(0xffaeaeae), borderRadius: BorderRadius.circular(8)),
+                    margin: EdgeInsets.only(left: 10),
+                  ),
+                  Text(
+                    document.createdAt.split(".").first,
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
 
 
   Widget buildInput() {
@@ -425,5 +592,12 @@ class _CommentsPageState extends State<CommentsPage> {
           border: Border(top: BorderSide( width: 0.5)), color: Colors.white),
     );
   }
+
+  Widget buildLoading() {
+    return Positioned(
+      child: SizedBox.shrink(),
+    );
+  }
+
 
 }

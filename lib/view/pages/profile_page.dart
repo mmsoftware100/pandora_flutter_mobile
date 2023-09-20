@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/shared_preference_provider.dart';
 import '../widgets/header_widget.dart';
 import 'forgot_password_page.dart';
 import 'forgot_password_verification_page.dart';
@@ -262,6 +263,35 @@ class _ProfilePageState extends State<ProfilePage>{
   double  _drawerIconSize = 24;
   double _drawerFontSize = 17;
 
+  _showDialog(BuildContext context,String title){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: new Text("Attention"),
+          content: new Text("Are you sure to delete you account ?"),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text("Yes"),
+              onPressed: ()async{
+                await Provider.of<SharedPreferenceProvider>(context,listen: false).saveUserNameAndPassword("", "");
+                Provider.of<UserProvider>(context,listen: false).userClear();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> SplashScreen(title: "")), (route) => false);
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text("No"),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        )
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -443,6 +473,7 @@ class _ProfilePageState extends State<ProfilePage>{
                                     ...ListTile.divideTiles(
                                       color: Colors.grey,
                                       tiles: [
+                                        /*
                                         ListTile(
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 4),
@@ -450,11 +481,14 @@ class _ProfilePageState extends State<ProfilePage>{
                                           title: Text("Location"),
                                           subtitle: Text("Myanmar"),
                                         ),
+
+                                         */
                                         ListTile(
                                           leading: Icon(Icons.email),
                                           title: Text("Email"),
                                           subtitle: Text(Provider.of<UserProvider>(context,listen: false).user.email),
                                         ),
+                                        /*
                                         ListTile(
                                           leading: Icon(Icons.phone),
                                           title: Text("Phone"),
@@ -466,6 +500,8 @@ class _ProfilePageState extends State<ProfilePage>{
                                           subtitle: Text(
                                               "This is a about me link and you can khow about me in this section."),
                                         ),
+
+                                         */
                                       ],
                                     ),
                                   ],
@@ -473,6 +509,28 @@ class _ProfilePageState extends State<ProfilePage>{
                               ],
                             ),
                           ),
+                        ),
+                        InkWell(
+                          child: Card(
+                            child: ListTile(
+                              leading: Icon(Icons.delete,color: Colors.red,),
+                              title: Text("Delete Account"),
+                            ),
+                          ),
+                          onTap: (){
+                            _showDialog(context,"Are you sure to delete you account ?");
+                          },
+                        ),
+                        InkWell(
+                          child: Card(
+                            child: ListTile(
+                              leading: Icon(Icons.logout,color: Colors.blue,),
+                              title: Text("Log out"),
+                            ),
+                          ),
+                          onTap: (){
+                            _showDialog(context,"Are you sure log out ?");
+                          },
                         )
                       ],
                     ),

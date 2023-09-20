@@ -1,5 +1,6 @@
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,7 @@ import '../../providers/user_provider.dart';
 import '../../providers/vote_provider.dart';
 import '../pages/article/update_article_page.dart';
 import '../pages/comments_page.dart';
+import '../pages/splash_screen.dart';
 
 class PostWidget extends StatefulWidget {
   ArticleModel article;
@@ -27,6 +29,8 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
