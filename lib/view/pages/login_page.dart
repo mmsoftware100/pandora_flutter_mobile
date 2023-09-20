@@ -158,34 +158,41 @@ class _LoginPageState extends State<LoginPage>{
                                     // bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: defaultEmail, password: defaultPassword);
                                     bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: userNameController.text, password: passwordController.text);
 
-                                    // hide loading indicator
-                                    Navigator.pop(context);
 
                                     print("loginStatus status is "+loginStatus.toString());
 
                                     if(loginStatus == true){
-                                      saveUserNameAndPassword(userNameController.text,passwordController.text);
+                                      print("store in localStorage");
+                                      // save in local storage
+                                      // saveUserNameAndPassword(userNameController.text,passwordController.text);
                                       await Provider.of<SharedPreferenceProvider>(context,listen:  false).saveUserNameAndPassword(userNameController.text, passwordController.text);
+                                      print("stored in localStorage");
 
-                                      if(widget.loginStautus == false){
-                                        Navigator.pop(context);
+                                      // back key show up or not
+                                      print("widget.loginStatus is ${widget.loginStautus}");
+
+
+                                      int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                                      String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+                                      bool articleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
+
+                                      print("articleStatus is $articleStatus");
+
+
+                                      // hide loading indicator
+                                      Navigator.pop(context);
+                                      if(articleStatus == true){
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                                       }
                                       else{
-                                        int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
-                                        String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
-                                        bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
+                                        _showToast(context,'Article bug');
 
-                                        if(atricleStatus == true){
-                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                                        }
-                                        else{
-                                          _showToast(context,'Article bug');
-
-                                        }
                                       }
 
                                     }
                                     else{
+                                      // hide loading indicator
+                                      Navigator.pop(context);
                                       _showToast(context,'Login fail');
 
                                     }

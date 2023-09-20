@@ -337,9 +337,7 @@ class _CommentsPageState extends State<CommentsPage> {
         controller: listScrollController,
       )
           : Center(
-        child: CircularProgressIndicator(
-          color: ColorConstants.themeColor,
-        ),
+        child: Text("There's no comment, write your first comment!"),
       ),
     );
   }
