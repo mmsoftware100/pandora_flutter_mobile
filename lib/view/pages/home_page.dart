@@ -142,8 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: parseColor("#69001e"),
         child: Icon(FontAwesomeIcons.pen,color: Colors.white,),
         onPressed: () async{
-
-          await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
+          // await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
           String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
           String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
 
@@ -154,11 +153,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
           }
           else{
-            bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username!, password: password!);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateArticlePage()));
+            // bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username!, password: password!);
 
+            /*
             if(loginStatus == true){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateArticlePage()));
             }
+
+             */
           }
         },
       ),

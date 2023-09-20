@@ -37,7 +37,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
       // padding: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: secondHalf.isEmpty
           ? new Text(firstHalf,
-          style: GoogleFonts.lato(
+          style: GoogleFonts.padauk(
               color: Colors.grey[600],
               letterSpacing: 1,
               fontSize: newsFontSize,
@@ -47,7 +47,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
           : new Column(
         children: <Widget>[
           new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf),
-      style: GoogleFonts.lato(
+      style: GoogleFonts.padauk(
           color: Colors.grey[600],
           letterSpacing: 1,
           fontSize: newsFontSize,

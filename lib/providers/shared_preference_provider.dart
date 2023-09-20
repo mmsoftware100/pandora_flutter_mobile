@@ -8,11 +8,14 @@ class SharedPreferenceProvider extends ChangeNotifier{
   String password ="";
 
 
-  saveUserNameAndPassword(String userName, String password) async {
+  saveUserNameAndPassword(String userNameUpdate, String passwordUpdate) async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString('username', userName);
-    prefs.setString('password', password);
-    getSahredPreferenesData();
+    prefs.setString('username', userNameUpdate);
+    prefs.setString('password', passwordUpdate);
+    // getSahredPreferenesData();
+    userName = userNameUpdate;
+    password = passwordUpdate;
+
     notifyListeners();
 
   }

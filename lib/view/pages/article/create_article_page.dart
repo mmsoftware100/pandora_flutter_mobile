@@ -235,7 +235,7 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
 
 
             TextFormField(
-              maxLines: 1,
+              maxLines: 5,
               controller: contentController,
               decoration: InputDecoration(
                 border: InputBorder.none,
