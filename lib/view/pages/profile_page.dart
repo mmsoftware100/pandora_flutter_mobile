@@ -268,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage>{
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
           title: new Text("Attention"),
-          content: new Text("Are you sure to delete you account ?"),
+          content: new Text(title),
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,

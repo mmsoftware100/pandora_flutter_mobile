@@ -8,8 +8,8 @@ class MyAlertDialog{
     showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: new Text("Sign in ပြုလုပ်ပါ"),
-          content: new Text("ယခုလုပ်ဆောင်ချက်အတွက် Sign in ပြုလုပ်ပါ။"),
+          title: new Text("Sign In"),
+          content: new Text("To do this operation, you need to sign in first."),
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
