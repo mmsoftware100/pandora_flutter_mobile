@@ -75,7 +75,10 @@ class _LoginPageState extends State<LoginPage>{
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
-                    child: Icon(Icons.arrow_back,color: Colors.black,),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.arrow_back,color: Colors.black,),
+                    ),
                     onTap: (){
                       Navigator.pop(context);
                     },
