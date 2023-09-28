@@ -1,5 +1,8 @@
 # Pandora
 
+## 2023-09-28 User agreement and Report Function
+
+- 
 ## 2023-09-27 iOS Screenshot Update
 
 ### App Description
