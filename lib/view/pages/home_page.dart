@@ -55,25 +55,63 @@ class _HomeScreenState extends State<HomeScreen> {
   //   print("userName is "+userName!);
   // }
 
-  _showDialog(BuildContext context){
+   _termsAndConditionAgreementDialog(BuildContext context){
     showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: new Text("Log out"),
-          content: new Text("Do you quit ?"),
+          title: new Text("Terms & conditions"),
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: 300,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                      'Name of requestor: }'
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Description:' * 20,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Help_Description',
+                  ),
+                  Text(
+                    'Type of help needed:Help_TypeNeeded',
+                  )
+                ],
+              ),
+            ),
+          ),
           actions: <Widget>[
+            /*
             CupertinoDialogAction(
               isDefaultAction: true,
               child: Text("Yes"),
               onPressed: ()async{
+
                 await Provider.of<SharedPreferenceProvider>(context,listen: false).saveUserNameAndPassword("", "");
                 Provider.of<UserProvider>(context,listen: false).userClear();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> SplashScreen(title: "")), (route) => false);
               },
             ),
+
+             */
             CupertinoDialogAction(
-              child: Text("No"),
-              onPressed: (){
+              isDefaultAction: true,
+              child: Text("Agree"),
+              onPressed: ()async{
+                await Provider.of<SharedPreferenceProvider>(context,listen:  false).saveTermsAndConditionAgreement();
+
                 Navigator.pop(context);
               },
             )
@@ -81,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
         )
     );
   }
+
 
   @override
   void initState() {
@@ -92,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<SharedPreferenceProvider>(context,listen:  true).termsAndConditionAgree == false ? Future.delayed(Duration.zero, () => _termsAndConditionAgreementDialog(context)):null;
     return Scaffold(
       appBar: AppBar(
         elevation: 1,

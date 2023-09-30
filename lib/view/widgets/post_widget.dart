@@ -81,16 +81,51 @@ class _PostWidgetState extends State<PostWidget> {
                       ],
                     ),
                     Spacer(),
-                    widget.article.user!.id == Provider.of<UserProvider>(context,listen: true).user.id ? IconButton(
+                     IconButton(
                       icon: Icon(
                         FontAwesomeIcons.bars,
                         size: 14.0,
                         color: Colors.grey,
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (content)=>UpdateArticlePage(articleId: int.parse(widget.article.id.toString()), content: widget.article.content,)));
+
+                        showFlexibleBottomSheet(
+                          minHeight: 0,
+                          initHeight: 0.8,
+                          maxHeight: 0.8,
+                          context: context,
+                          builder: (_,__,___){
+                            return Scaffold(
+                              body: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  child: ListView(
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(Icons.report),
+                                        title: Text("Report this article"),
+                                        onTap: (){
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      widget.article.user!.id == Provider.of<UserProvider>(context,listen: true).user.id ? ListTile(
+                                        leading: Icon(Icons.edit),
+                                        title: Text("Update"),
+                                        onTap: (){
+                                          Navigator.of(context).pop();
+                                          Navigator.push(context, MaterialPageRoute(builder: (content)=>UpdateArticlePage(articleId: int.parse(widget.article.id.toString()), content: widget.article.content,)));
+                                        },
+                                      ): Container()
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          isExpand: false,
+                        );
                       },
-                    ) : Container(),
+                    ) ,
                   ],
                 ),
 
