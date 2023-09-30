@@ -252,7 +252,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if(index != 1){
       setState(() {
         _selectedIndex = index;
+        curentPage = 1;
       });
+      String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,curentPage!);
     }
     else{
 

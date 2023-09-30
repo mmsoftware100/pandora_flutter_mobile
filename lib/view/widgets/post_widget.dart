@@ -152,7 +152,7 @@ class _PostWidgetState extends State<PostWidget> {
                 Container(
                   margin: const EdgeInsets.only(top: 10.0, right: 20.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
 
                       //Comment icon
