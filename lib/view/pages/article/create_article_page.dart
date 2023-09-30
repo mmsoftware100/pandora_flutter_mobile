@@ -52,11 +52,15 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Create Post"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /*
             const SizedBox(
               height: 10,
             ),
@@ -98,6 +102,8 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
             const SizedBox(
               height: 20,
             ),
+
+             */
             /*
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -243,6 +249,22 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                 hintStyle: TextStyle(fontSize: 20),
               ),
             ),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey, minimumSize: const Size.fromHeight(50)),
+              onPressed: ()async {
+
+                String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+                bool status = await Provider.of<ArticleProvider>(context, listen: false).createAritcle(accessToken!, "Test Page Title", contentController.text);
+                if(status == true){
+                  _showToast(context,"Post created");
+                  int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
+                  await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('Post'),
+            )
           ],
         ),
       ),

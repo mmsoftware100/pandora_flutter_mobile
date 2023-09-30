@@ -1,5 +1,26 @@
 # Pandora
 
+## 2023-09-27 iOS Screenshot Update
+
+### App Description
+
+"Pandora Box - Read, Write, and Connect"
+
+
+Welcome to Pandora Box, your go-to platform for reading, writing, and connecting with others through articles.
+
+Key Features:
+
+Read Articles: Explore a diverse collection of articles written by users from around the world. Discover fascinating stories, insights, and knowledge.
+
+Write Your Own: Share your thoughts and experiences with the world by writing your own articles. Express yourself and inspire others.
+
+Vote and Comment: Engage with the community by voting for your favorite articles and leaving comments. Join the conversation and make your voice heard.
+
+
+Pandora Box is a simple and user-friendly platform designed for readers and writers of all levels. Start your journey of discovery and self-expression today!
+
+
 
 ## 2023-09-05 Improvement
 
