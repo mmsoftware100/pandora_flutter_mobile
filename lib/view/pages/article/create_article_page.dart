@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/loader.dart';
 import '../../../providers/article_provider.dart';
 import '../../../providers/user_provider.dart';
 
@@ -13,6 +14,8 @@ class CreateArticlePage extends StatefulWidget {
 }
 
 class _CreateArticlePageState extends State<CreateArticlePage> {
+
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
   TextEditingController contentController = TextEditingController();
 
@@ -254,14 +257,25 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey, minimumSize: const Size.fromHeight(50)),
               onPressed: ()async {
 
+                // show loading indicator
+                Dialogs.showLoadingDialog(context, _keyLoader);
+
+
                 String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
                 bool status = await Provider.of<ArticleProvider>(context, listen: false).createAritcle(accessToken!, "Test Page Title", contentController.text);
+
+
                 if(status == true){
                   _showToast(context,"Post created");
                   int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
                   await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
                   Navigator.pop(context);
                 }
+                else{
+                  Navigator.pop(context);
+                }
+                // hide loading indicator
+                Navigator.pop(context);
               },
               child: Text('Post'),
             )

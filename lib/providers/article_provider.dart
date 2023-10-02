@@ -58,8 +58,6 @@ class ArticleProvider extends ChangeNotifier{
     return status;
   }
 
-
-
   Future<bool> createAritcle(String token,String title,String content)async{
     bool status = false;
 
@@ -106,6 +104,12 @@ class ArticleProvider extends ChangeNotifier{
 
     }
     return status;
+  }
+
+  hideArticle({required int articleId}){
+    articleList.removeWhere((item) => item.id == articleId);
+    print(articleId);
+    notifyListeners();
   }
 
   increseCommentCount({required int articleIndex}){

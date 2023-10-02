@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pandora_flutter_mobile/components/terms_and_condition_alert.dart';
 import 'package:pandora_flutter_mobile/view/pages/profile_page.dart';
 import 'package:pandora_flutter_mobile/view/pages/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ import '../../tweets.dart';
 import '../widgets/image_view_widget.dart';
 import '../widgets/pdf_widget.dart';
 import '../widgets/post_widget.dart';
+import '../widgets/terms_and_condition_widget.dart';
 import '../widgets/text_description.dart';
 import '../widgets/video_view_widget.dart';
 import 'comments_page.dart';
@@ -38,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   int _selectedIndex = 0; //New
   bool _enablePullDown = true; // this enable our app to able to pull down
   RefreshController _refreshController = RefreshController(); // the refresh controller
@@ -55,25 +58,38 @@ class _HomeScreenState extends State<HomeScreen> {
   //   print("userName is "+userName!);
   // }
 
-  _showDialog(BuildContext context){
+   _termsAndConditionAgreementDialog(BuildContext context){
     showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: new Text("Log out"),
-          content: new Text("Do you quit ?"),
+          title: new Text("End-User License Agreement (EULA)"),
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: 300,
+            child: SingleChildScrollView(
+              child: TermsAndConditionWidget(),
+            ),
+          ),
           actions: <Widget>[
+            /*
             CupertinoDialogAction(
               isDefaultAction: true,
               child: Text("Yes"),
               onPressed: ()async{
+
                 await Provider.of<SharedPreferenceProvider>(context,listen: false).saveUserNameAndPassword("", "");
                 Provider.of<UserProvider>(context,listen: false).userClear();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> SplashScreen(title: "")), (route) => false);
               },
             ),
+
+             */
             CupertinoDialogAction(
-              child: Text("No"),
-              onPressed: (){
+              isDefaultAction: true,
+              child: Text("Agree"),
+              onPressed: ()async{
+                await Provider.of<SharedPreferenceProvider>(context,listen:  false).saveTermsAndConditionAgreement();
+
                 Navigator.pop(context);
               },
             )
@@ -81,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
         )
     );
   }
+
 
   @override
   void initState() {
@@ -92,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<SharedPreferenceProvider>(context,listen:  true).termsAndConditionAgree == false ? Future.delayed(Duration.zero, () =>TermsAndConditionDialogs.termsAndConditionDialog(context, _keyLoader)):null;
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -212,7 +230,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if(index != 1){
       setState(() {
         _selectedIndex = index;
+        curentPage = 1;
       });
+      String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
+      bool atricleStatus = await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,curentPage!);
     }
     else{
 
@@ -362,4 +383,5 @@ class _HomeScreenState extends State<HomeScreen> {
     itemCount: Provider.of<ArticleProvider>(context,listen: true).articleList.length,
     ),);
   }
+
 }

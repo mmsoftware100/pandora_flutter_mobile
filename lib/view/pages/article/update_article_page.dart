@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/loader.dart';
 import '../../../providers/article_provider.dart';
 import '../../../providers/user_provider.dart';
 
@@ -15,6 +16,7 @@ class UpdateArticlePage extends StatefulWidget {
 
 class _UpdateArticlePageState extends State<UpdateArticlePage> {
 
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController contentController = TextEditingController();
 
   void _showToast(BuildContext context,String result) {
@@ -80,14 +82,24 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   onPressed: ()async {
 
+                    // show loading indicator
+                    Dialogs.showLoadingDialog(context, _keyLoader);
+
                     String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
                     bool status = await Provider.of<ArticleProvider>(context, listen: false).updateAritcle(accessToken!, "Test Page Title", contentController.text,widget.articleId);
+
+
                     if(status == true){
                       _showToast(context,"Post updated");
                       int? currentPage = Provider.of<ArticleProvider>(context, listen: false).current_page;
                       await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
                       Navigator.pop(context);
                     }
+                    else{
+                      Navigator.pop(context);
+                    }
+                    // hide loading indicator
+                    Navigator.pop(context);
                   },
                   child: Text('Update'),
                 ):

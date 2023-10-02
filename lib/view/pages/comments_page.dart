@@ -529,46 +529,38 @@ class _CommentsPageState extends State<CommentsPage> {
                 icon: Icon(Icons.send),
                 onPressed: ()async{
                   print("comment create");
-
-                  await Provider.of<SharedPreferenceProvider>(context,listen:  false).getSahredPreferenesData();
-                  String username = Provider.of<SharedPreferenceProvider>(context,listen:  false).userName;
-                  String password = Provider.of<SharedPreferenceProvider>(context,listen:  false).password;
-
-                  if(username == "" || password == ""){
+                  int userId = Provider.of<UserProvider>(context, listen: false).user.id;
+                  if(userId == 0 ){
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(loginStautus: false)));
                     MyAlertDialog.ShowDialog(context);
+                    print("After dialog");
 
                   }
                   else{
-                    bool loginStatus = await Provider.of<UserProvider>(context, listen: false).login(email: username, password: password);
+                    if(_commentController.text.length > 0){
+                      int userId = Provider.of<UserProvider>(context, listen:  false).user.id;
+                      print(userId);
+                      String accessToke = Provider.of<UserProvider>(context, listen: false).user.accessToken;
+                      //String articleId = Provider.of<ArticleProvider>(context, listen: false).articleList[int.parse(widget.articleId)].id.toString();
+                      print(widget.articleId);
+                      Provider.of<CommentProvider>(context, listen: false).addComment(articleId: int.parse(widget.articleId), userId: userId, comment: _commentController.text, user: Provider.of<UserProvider>(context, listen:  false).user);
 
-                    if(loginStatus == true){
-                      if(_commentController.text.length > 0){
-                        int userId = Provider.of<UserProvider>(context, listen:  false).user.id;
-                        print(userId);
-                        String accessToke = Provider.of<UserProvider>(context, listen: false).user.accessToken;
-                        //String articleId = Provider.of<ArticleProvider>(context, listen: false).articleList[int.parse(widget.articleId)].id.toString();
-                        print(widget.articleId);
-                        Provider.of<CommentProvider>(context, listen: false).addComment(articleId: int.parse(widget.articleId), userId: userId, comment: _commentController.text, user: Provider.of<UserProvider>(context, listen:  false).user);
+                      Provider.of<ArticleProvider>(context,listen: false).increseCommentCount(articleIndex: widget.articleIndex);
+                      // show loading indicator
+                      Dialogs.showLoadingDialog(context, _keyLoader);
 
-                        Provider.of<ArticleProvider>(context,listen: false).increseCommentCount(articleIndex: widget.articleIndex);
-                        // show loading indicator
-                        Dialogs.showLoadingDialog(context, _keyLoader);
+                      await Provider.of<CommentProvider>(context, listen:  false).createComment(accessToke, widget.articleId, _commentController.text);
 
-                        await Provider.of<CommentProvider>(context, listen:  false).createComment(accessToke, widget.articleId, _commentController.text);
+                      // hide loading indicator
+                      Navigator.pop(context);
 
-                        // hide loading indicator
-                        Navigator.pop(context);
-
-                        _commentController.clear();
-                      }
+                      _commentController.clear();
                     }
                   }
 
 
 
-
-
+                  print("After business logic");
                   if (listScrollController.hasClients) {
                     final position = listScrollController.position.maxScrollExtent;
                     listScrollController.animateTo(
