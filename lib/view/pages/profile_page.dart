@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pandora_flutter_mobile/providers/user_provider.dart';
+import 'package:pandora_flutter_mobile/view/pages/terms_and_condition_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/shared_preference_provider.dart';
@@ -509,6 +510,17 @@ class _ProfilePageState extends State<ProfilePage>{
                               ],
                             ),
                           ),
+                        ),
+                        InkWell(
+                          child: Card(
+                            child: ListTile(
+                              leading: Icon(Icons.info),
+                              title: Text("Terms and condition"),
+                            ),
+                          ),
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TermsAndConditionPage()));
+                          },
                         ),
                         InkWell(
                           child: Card(

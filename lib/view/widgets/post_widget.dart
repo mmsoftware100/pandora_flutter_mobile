@@ -83,8 +83,7 @@ class _PostWidgetState extends State<PostWidget> {
                     Spacer(),
                      IconButton(
                       icon: Icon(
-                        FontAwesomeIcons.bars,
-                        size: 14.0,
+                        Icons.arrow_drop_down,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -102,10 +101,22 @@ class _PostWidgetState extends State<PostWidget> {
                                   child: ListView(
                                     children: [
                                       ListTile(
-                                        leading: Icon(Icons.report),
+                                        leading: Icon(Icons.report_gmailerrorred_outlined),
                                         title: Text("Report this article"),
                                         onTap: (){
                                           Navigator.of(context).pop();
+                                          print("Hello "+widget.article.id.toString());
+                                          Provider.of<ArticleProvider>(context,listen: false).hideArticle(articleId: widget.article.id);
+
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.backspace_outlined),
+                                        title: Text("Hide this article"),
+                                        onTap: (){
+                                          Navigator.of(context).pop();
+                                          Provider.of<ArticleProvider>(context,listen: false).hideArticle(articleId: widget.article.id);
+
                                         },
                                       ),
                                       widget.article.user!.id == Provider.of<UserProvider>(context,listen: true).user.id ? ListTile(
