@@ -88,8 +88,6 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
                     String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
                     bool status = await Provider.of<ArticleProvider>(context, listen: false).updateAritcle(accessToken!, "Test Page Title", contentController.text,widget.articleId);
 
-                    // hide loading indicator
-                    Navigator.pop(context);
 
                     if(status == true){
                       _showToast(context,"Post updated");
@@ -97,6 +95,11 @@ class _UpdateArticlePageState extends State<UpdateArticlePage> {
                       await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
                       Navigator.pop(context);
                     }
+                    else{
+                      Navigator.pop(context);
+                    }
+                    // hide loading indicator
+                    Navigator.pop(context);
                   },
                   child: Text('Update'),
                 ):

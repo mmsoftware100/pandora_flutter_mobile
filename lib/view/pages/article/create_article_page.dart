@@ -264,9 +264,6 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                 String accessToken = Provider.of<UserProvider>(context,listen: false).user.accessToken;
                 bool status = await Provider.of<ArticleProvider>(context, listen: false).createAritcle(accessToken!, "Test Page Title", contentController.text);
 
-                // hide loading indicator
-                Navigator.pop(context);
-
 
                 if(status == true){
                   _showToast(context,"Post created");
@@ -274,6 +271,11 @@ class _CreateArticlePageState extends State<CreateArticlePage> {
                   await Provider.of<ArticleProvider>(context, listen: false).getArticle(accessToken,currentPage!);
                   Navigator.pop(context);
                 }
+                else{
+                  Navigator.pop(context);
+                }
+                // hide loading indicator
+                Navigator.pop(context);
               },
               child: Text('Post'),
             )
