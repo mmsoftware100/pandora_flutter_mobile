@@ -119,6 +119,15 @@ class _PostWidgetState extends State<PostWidget> {
 
                                         },
                                       ),
+                                      ListTile(
+                                        leading: Icon(Icons.block,color: Colors.red,),
+                                        title: Text("Block this user"),
+                                        onTap: (){
+                                          Navigator.of(context).pop();
+                                          Provider.of<ArticleProvider>(context,listen: false).blockUser(userId: widget.article.user!.id);
+
+                                        },
+                                      ),
                                       widget.article.user!.id == Provider.of<UserProvider>(context,listen: true).user.id ? ListTile(
                                         leading: Icon(Icons.edit),
                                         title: Text("Update"),
