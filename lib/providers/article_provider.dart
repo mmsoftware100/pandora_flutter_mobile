@@ -112,6 +112,12 @@ class ArticleProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  blockUser({required int userId}){
+    articleList.removeWhere((element) => element.user!.id == userId);
+    print(userId);
+    notifyListeners();
+  }
+
   increseCommentCount({required int articleIndex}){
     articleList[articleIndex].commentCount += 1;
 
