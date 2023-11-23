@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     new Timer(
-        Duration(milliseconds: 10),(){
+        Duration(milliseconds: 1),(){
       setState(() {
         _isVisible = true; // Now it is showing fade effect and navigating to Login page
       });
